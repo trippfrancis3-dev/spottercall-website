@@ -1,0 +1,1243 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SpotterCall — Distance Calling</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@300;400;500;600;700&family=Barlow+Condensed:wght@300;400;500;600;700&family=Bebas+Neue&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #0A0A0A;
+    --dark: #141414;
+    --charcoal: #1C1C1E;
+    --steel: #2A2D2E;
+    --gunmetal: #3A3F41;
+    --sage: #5C6B52;
+    --moss: #6B7F5E;
+    --amber: #D4A847;
+    --amber-glow: #E8C060;
+    --orange-hot: #E87A2E;
+    --cream: #F0EAD6;
+    --white: #F5F5F0;
+    --reticle: rgba(212, 168, 71, 0.6);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: 'Barlow', sans-serif;
+    overflow-x: hidden;
+  }
+
+  /* ========== HERO ========== */
+  .hero {
+    position: relative;
+    height: 100vh;
+    min-height: 700px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background: 
+      radial-gradient(ellipse 80% 60% at 50% 40%, rgba(92, 107, 82, 0.15) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 50% at 70% 50%, rgba(212, 168, 71, 0.05) 0%, transparent 60%),
+      linear-gradient(180deg, var(--black) 0%, #0D0F0D 50%, var(--black) 100%);
+  }
+
+  /* Scope tube vignette */
+  .scope-vignette {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    background: radial-gradient(circle at 50% 50%, transparent 30%, rgba(0,0,0,0.3) 55%, rgba(0,0,0,0.85) 75%, rgba(0,0,0,0.97) 90%);
+  }
+
+  /* Animated grain overlay */
+  .grain {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.03;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  }
+
+  /* Crosshair reticle overlay */
+  .reticle-overlay {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 2;
+  }
+
+  .reticle-overlay svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  /* Mil-dot marks along crosshair */
+  .mil-mark {
+    fill: var(--reticle);
+  }
+
+  .crosshair-line {
+    stroke: var(--reticle);
+    stroke-width: 0.5;
+  }
+
+  .crosshair-line-thin {
+    stroke: rgba(212, 168, 71, 0.25);
+    stroke-width: 0.3;
+  }
+
+  .reticle-circle {
+    stroke: rgba(212, 168, 71, 0.2);
+    fill: none;
+    stroke-width: 0.4;
+  }
+
+  /* Mountain silhouette */
+  .mountain-silhouette {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 35vh;
+    z-index: 1;
+  }
+
+  .mountain-silhouette svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  /* Hero content */
+  .hero-content {
+    position: relative;
+    z-index: 5;
+    text-align: center;
+    padding: 0 24px;
+    animation: fadeInUp 1.2s ease-out;
+  }
+
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(40px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .tagline-top {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    letter-spacing: 6px;
+    text-transform: uppercase;
+    color: var(--amber);
+    margin-bottom: 16px;
+    animation: fadeInUp 1.2s ease-out 0.2s both;
+  }
+
+  .logo-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(72px, 12vw, 160px);
+    line-height: 0.9;
+    letter-spacing: 4px;
+    color: var(--white);
+    text-shadow: 0 0 80px rgba(212, 168, 71, 0.15);
+    margin-bottom: 8px;
+    animation: fadeInUp 1.2s ease-out 0.3s both;
+  }
+
+  .logo-title span {
+    color: var(--amber);
+  }
+
+  .subtitle {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 400;
+    font-size: clamp(20px, 3vw, 32px);
+    letter-spacing: 10px;
+    text-transform: uppercase;
+    color: var(--moss);
+    margin-bottom: 40px;
+    animation: fadeInUp 1.2s ease-out 0.5s both;
+  }
+
+  .hero-description {
+    font-family: 'Barlow', sans-serif;
+    font-weight: 300;
+    font-size: 18px;
+    line-height: 1.7;
+    color: rgba(240, 234, 214, 0.6);
+    max-width: 560px;
+    margin: 0 auto 48px;
+    animation: fadeInUp 1.2s ease-out 0.7s both;
+  }
+
+  .cta-group {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    flex-wrap: wrap;
+    animation: fadeInUp 1.2s ease-out 0.9s both;
+  }
+
+  .cta-btn {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 16px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    padding: 16px 40px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+  }
+
+  .cta-primary {
+    background: var(--amber);
+    color: var(--black);
+  }
+
+  .cta-primary:hover {
+    background: var(--amber-glow);
+    box-shadow: 0 0 40px rgba(212, 168, 71, 0.3);
+    transform: translateY(-2px);
+  }
+
+  .cta-secondary {
+    background: transparent;
+    color: var(--amber);
+    border: 1px solid rgba(212, 168, 71, 0.4);
+  }
+
+  .cta-secondary:hover {
+    border-color: var(--amber);
+    background: rgba(212, 168, 71, 0.08);
+    transform: translateY(-2px);
+  }
+
+  /* Scroll indicator */
+  .scroll-indicator {
+    position: absolute;
+    bottom: 32px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 5;
+    animation: bounce 2s infinite 2s;
+  }
+
+  @keyframes bounce {
+    0%, 100% { transform: translateX(-50%) translateY(0); }
+    50% { transform: translateX(-50%) translateY(8px); }
+  }
+
+  .scroll-indicator svg {
+    width: 24px;
+    height: 24px;
+    stroke: rgba(212, 168, 71, 0.4);
+    fill: none;
+    stroke-width: 2;
+  }
+
+  /* ========== HOW IT WORKS ========== */
+  .section {
+    padding: 120px 24px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .section-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 600;
+    font-size: 12px;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    color: var(--amber);
+    margin-bottom: 16px;
+  }
+
+  .section-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(40px, 6vw, 72px);
+    letter-spacing: 2px;
+    color: var(--white);
+    margin-bottom: 24px;
+    line-height: 1;
+  }
+
+  .section-subtitle {
+    font-weight: 300;
+    font-size: 18px;
+    line-height: 1.7;
+    color: rgba(240, 234, 214, 0.5);
+    max-width: 600px;
+    margin-bottom: 64px;
+  }
+
+  /* Voice Demo */
+  .voice-demo {
+    background: var(--dark);
+    border: 1px solid rgba(212, 168, 71, 0.1);
+    border-radius: 2px;
+    padding: 48px;
+    max-width: 680px;
+    margin: 0 auto 80px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .voice-demo::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--amber), transparent);
+  }
+
+  .voice-line {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    margin-bottom: 20px;
+    opacity: 0;
+    animation: voiceFadeIn 0.6s ease-out forwards;
+  }
+
+  .voice-line:nth-child(1) { animation-delay: 0.5s; }
+  .voice-line:nth-child(2) { animation-delay: 1.2s; }
+  .voice-line:nth-child(3) { animation-delay: 1.9s; }
+  .voice-line:nth-child(4) { animation-delay: 2.6s; }
+  .voice-line:nth-child(5) { animation-delay: 3.3s; }
+  .voice-line:nth-child(6) { animation-delay: 4.0s; }
+
+  @keyframes voiceFadeIn {
+    from { opacity: 0; transform: translateX(-12px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+
+  .voice-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    min-width: 90px;
+    padding-top: 3px;
+  }
+
+  .voice-label.shooter { color: var(--moss); }
+  .voice-label.app { color: var(--amber); }
+
+  .voice-text {
+    font-family: 'Barlow', sans-serif;
+    font-weight: 400;
+    font-size: 18px;
+    color: rgba(240, 234, 214, 0.8);
+    line-height: 1.5;
+  }
+
+  .voice-text em {
+    font-style: normal;
+    color: var(--amber-glow);
+    font-weight: 500;
+  }
+
+  /* Waveform decoration */
+  .waveform {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    margin-top: 24px;
+    justify-content: center;
+  }
+
+  .wave-bar {
+    width: 3px;
+    background: var(--amber);
+    opacity: 0.3;
+    border-radius: 2px;
+    animation: waveAnim 1.2s ease-in-out infinite;
+  }
+
+  @keyframes waveAnim {
+    0%, 100% { height: 4px; }
+    50% { height: 20px; }
+  }
+
+  /* ========== FEATURES ========== */
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+  }
+
+  @media (max-width: 768px) {
+    .features-grid { grid-template-columns: 1fr; }
+  }
+
+  .feature-card {
+    background: var(--dark);
+    padding: 48px 36px;
+    position: relative;
+    transition: all 0.4s ease;
+    border: 1px solid rgba(255,255,255,0.03);
+  }
+
+  .feature-card:hover {
+    background: var(--charcoal);
+    border-color: rgba(212, 168, 71, 0.15);
+  }
+
+  .feature-icon {
+    width: 48px;
+    height: 48px;
+    margin-bottom: 24px;
+    color: var(--amber);
+  }
+
+  .feature-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    letter-spacing: 1px;
+    color: var(--white);
+    margin-bottom: 12px;
+  }
+
+  .feature-desc {
+    font-weight: 300;
+    font-size: 15px;
+    line-height: 1.7;
+    color: rgba(240, 234, 214, 0.45);
+  }
+
+  /* ========== TARGET SECTION ========== */
+  .target-section {
+    position: relative;
+    padding: 120px 24px;
+    text-align: center;
+    overflow: hidden;
+  }
+
+  .target-bg {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+  }
+
+  .target-rings {
+    width: min(500px, 80vw);
+    height: min(500px, 80vw);
+    position: relative;
+  }
+
+  .target-ring {
+    position: absolute;
+    border-radius: 50%;
+    border: 1px solid;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .target-ring:nth-child(1) { width: 100%; height: 100%; border-color: rgba(212, 168, 71, 0.06); }
+  .target-ring:nth-child(2) { width: 80%; height: 80%; border-color: rgba(212, 168, 71, 0.08); }
+  .target-ring:nth-child(3) { width: 60%; height: 60%; border-color: rgba(212, 168, 71, 0.1); }
+  .target-ring:nth-child(4) { width: 40%; height: 40%; border-color: rgba(212, 168, 71, 0.13); }
+  .target-ring:nth-child(5) { width: 20%; height: 20%; border-color: rgba(212, 168, 71, 0.16); }
+  .target-ring:nth-child(6) { width: 6%; height: 6%; border-color: var(--amber); background: rgba(212, 168, 71, 0.08); }
+
+  .target-content {
+    position: relative;
+    z-index: 2;
+  }
+
+  .stat-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 48px;
+    max-width: 800px;
+    margin: 64px auto 0;
+  }
+
+  @media (max-width: 600px) {
+    .stat-grid { grid-template-columns: 1fr; gap: 32px; }
+  }
+
+  .stat-number {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 56px;
+    color: var(--amber);
+    line-height: 1;
+  }
+
+  .stat-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 400;
+    font-size: 14px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: rgba(240, 234, 214, 0.4);
+    margin-top: 8px;
+  }
+
+  /* ========== USE CASES ========== */
+  .use-cases {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+    margin-top: 64px;
+  }
+
+  @media (max-width: 768px) {
+    .use-cases { grid-template-columns: 1fr; }
+  }
+
+  .use-case {
+    padding: 56px 40px;
+    border: 1px solid rgba(255,255,255,0.04);
+    position: relative;
+    overflow: hidden;
+    transition: all 0.4s ease;
+  }
+
+  .use-case:hover {
+    border-color: rgba(212, 168, 71, 0.15);
+    background: rgba(212, 168, 71, 0.02);
+  }
+
+  .use-case-icon {
+    font-size: 40px;
+    margin-bottom: 24px;
+    display: block;
+    opacity: 0.7;
+  }
+
+  .use-case-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 32px;
+    letter-spacing: 1px;
+    color: var(--white);
+    margin-bottom: 12px;
+  }
+
+  .use-case-desc {
+    font-weight: 300;
+    font-size: 15px;
+    line-height: 1.7;
+    color: rgba(240, 234, 214, 0.4);
+  }
+
+  /* ========== PHONE MOCKUP SECTION ========== */
+  .phone-section {
+    padding: 120px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 80px;
+    max-width: 1100px;
+    margin: 0 auto;
+    flex-wrap: wrap;
+  }
+
+  .phone-mockup {
+    width: 280px;
+    height: 560px;
+    background: var(--charcoal);
+    border-radius: 36px;
+    border: 2px solid var(--gunmetal);
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 40px 80px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.05);
+    flex-shrink: 0;
+  }
+
+  .phone-notch {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 120px;
+    height: 28px;
+    background: var(--black);
+    border-radius: 0 0 16px 16px;
+    z-index: 3;
+  }
+
+  .phone-screen {
+    position: absolute;
+    inset: 8px;
+    border-radius: 28px;
+    background: linear-gradient(180deg, #0D1210 0%, #111A15 50%, #0D1210 100%);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .phone-header {
+    padding: 40px 20px 16px;
+    text-align: center;
+    border-bottom: 1px solid rgba(212, 168, 71, 0.1);
+  }
+
+  .phone-app-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    letter-spacing: 2px;
+    color: var(--amber);
+  }
+
+  .phone-profile {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--moss);
+    margin-top: 4px;
+  }
+
+  .phone-body {
+    flex: 1;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .phone-chat-line {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .phone-chat-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 9px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  .phone-chat-label.you { color: var(--moss); }
+  .phone-chat-label.ai { color: var(--amber); }
+
+  .phone-chat-bubble {
+    padding: 10px 14px;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 400;
+    max-width: 85%;
+    line-height: 1.4;
+  }
+
+  .phone-chat-bubble.you-msg {
+    background: rgba(92, 107, 82, 0.2);
+    color: rgba(240, 234, 214, 0.8);
+    border: 1px solid rgba(92, 107, 82, 0.15);
+    align-self: flex-end;
+  }
+
+  .phone-chat-bubble.ai-msg {
+    background: rgba(212, 168, 71, 0.08);
+    color: var(--amber-glow);
+    border: 1px solid rgba(212, 168, 71, 0.12);
+    font-weight: 600;
+    font-size: 20px;
+    font-family: 'Bebas Neue', sans-serif;
+    letter-spacing: 1px;
+  }
+
+  .phone-footer {
+    padding: 16px 20px;
+    border-top: 1px solid rgba(255,255,255,0.05);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  .mic-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--amber);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: micPulse 2s infinite;
+  }
+
+  @keyframes micPulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(212, 168, 71, 0.3); }
+    50% { box-shadow: 0 0 0 12px rgba(212, 168, 71, 0); }
+  }
+
+  .mic-icon svg {
+    width: 18px;
+    height: 18px;
+    fill: var(--black);
+  }
+
+  .mic-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: rgba(240, 234, 214, 0.3);
+  }
+
+  .phone-text-content {
+    flex: 1;
+    max-width: 480px;
+  }
+
+  .phone-text-content .section-title {
+    margin-bottom: 16px;
+  }
+
+  .earbuds-note {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-top: 32px;
+    padding: 20px 24px;
+    border: 1px solid rgba(212, 168, 71, 0.1);
+    background: rgba(212, 168, 71, 0.03);
+  }
+
+  .earbuds-icon {
+    width: 36px;
+    height: 36px;
+    color: var(--amber);
+    flex-shrink: 0;
+  }
+
+  .earbuds-text {
+    font-weight: 300;
+    font-size: 14px;
+    color: rgba(240, 234, 214, 0.5);
+    line-height: 1.6;
+  }
+
+  .earbuds-text strong {
+    color: var(--amber);
+    font-weight: 600;
+  }
+
+  /* ========== CTA SECTION ========== */
+  .cta-section {
+    padding: 120px 24px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .cta-section::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse 60% 50% at 50% 50%, rgba(212, 168, 71, 0.04) 0%, transparent 70%);
+  }
+
+  .cta-section .section-title {
+    position: relative;
+    z-index: 2;
+    margin-bottom: 16px;
+  }
+
+  .cta-section .hero-description {
+    position: relative;
+    z-index: 2;
+  }
+
+  .cta-section .cta-group {
+    position: relative;
+    z-index: 2;
+  }
+
+  /* ========== FOOTER ========== */
+  footer {
+    padding: 48px 24px;
+    text-align: center;
+    border-top: 1px solid rgba(255,255,255,0.04);
+  }
+
+  .footer-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 24px;
+    letter-spacing: 2px;
+    color: var(--gunmetal);
+    margin-bottom: 8px;
+  }
+
+  .footer-legal {
+    font-size: 12px;
+    color: rgba(240, 234, 214, 0.15);
+    letter-spacing: 1px;
+  }
+
+  /* ========== ELK SILHOUETTE ========== */
+  .elk-container {
+    position: absolute;
+    bottom: 12vh;
+    right: 12vw;
+    z-index: 1;
+    opacity: 0.06;
+    animation: fadeInUp 2s ease-out 1.5s both;
+  }
+
+  .elk-container svg {
+    width: 280px;
+    height: auto;
+  }
+
+  @media (max-width: 768px) {
+    .elk-container { display: none; }
+    .phone-section { gap: 48px; }
+    #story [style*="grid-template-columns"] { grid-template-columns: 1fr !important; max-width: 520px !important; margin: 0 auto !important; }
+  }
+</style>
+</head>
+<body>
+
+<div class="grain"></div>
+
+<!-- ============ HERO ============ -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="scope-vignette"></div>
+
+  <!-- Christmas Tree Reticle -->
+  <div class="reticle-overlay">
+    <svg viewBox="0 0 1000 600" preserveAspectRatio="xMidYMid slice">
+      <!-- Outer range circle -->
+      <circle cx="500" cy="300" r="220" stroke="rgba(212,168,71,0.06)" fill="none" stroke-width="0.5"></circle>
+      <circle cx="500" cy="300" r="160" stroke="rgba(212,168,71,0.08)" fill="none" stroke-width="0.5"></circle>
+
+      <!-- Main crosshair lines - top -->
+      <line x1="500" y1="0" x2="500" y2="220" stroke="rgba(212,168,71,0.35)" stroke-width="0.8"></line>
+      <!-- Main crosshair lines - bottom (thicker, center of tree trunk) -->
+      <line x1="500" y1="340" x2="500" y2="600" stroke="rgba(212,168,71,0.5)" stroke-width="1"></line>
+      <!-- Main crosshair lines - left -->
+      <line x1="0" y1="300" x2="430" y2="300" stroke="rgba(212,168,71,0.35)" stroke-width="0.8"></line>
+      <!-- Main crosshair lines - right -->
+      <line x1="570" y1="300" x2="1000" y2="300" stroke="rgba(212,168,71,0.35)" stroke-width="0.8"></line>
+
+      <!-- Inner thick crosshair segments -->
+      <line x1="500" y1="235" x2="500" y2="275" stroke="rgba(212,168,71,0.7)" stroke-width="1.2"></line>
+      <line x1="500" y1="325" x2="500" y2="340" stroke="rgba(212,168,71,0.7)" stroke-width="1.2"></line>
+      <line x1="440" y1="300" x2="475" y2="300" stroke="rgba(212,168,71,0.7)" stroke-width="1.2"></line>
+      <line x1="525" y1="300" x2="560" y2="300" stroke="rgba(212,168,71,0.7)" stroke-width="1.2"></line>
+
+      <!-- Center dot -->
+      <circle cx="500" cy="300" r="2.5" fill="rgba(212,168,71,0.8)"></circle>
+      <!-- Center open circle -->
+      <circle cx="500" cy="300" r="8" stroke="rgba(212,168,71,0.5)" fill="none" stroke-width="0.8"></circle>
+
+      <!-- ======= HORIZONTAL WINDAGE MARKS ON CENTER LINE ======= -->
+      <!-- Left side mil marks -->
+      <line x1="460" y1="297" x2="460" y2="303" stroke="rgba(212,168,71,0.5)" stroke-width="0.8"></line>
+      <circle cx="460" cy="300" r="1.5" fill="rgba(212,168,71,0.5)"></circle>
+      <line x1="420" y1="296" x2="420" y2="304" stroke="rgba(212,168,71,0.4)" stroke-width="0.7"></line>
+      <circle cx="420" cy="300" r="1.2" fill="rgba(212,168,71,0.35)"></circle>
+      <line x1="380" y1="296" x2="380" y2="304" stroke="rgba(212,168,71,0.3)" stroke-width="0.6"></line>
+      <line x1="340" y1="296" x2="340" y2="304" stroke="rgba(212,168,71,0.2)" stroke-width="0.5"></line>
+
+      <!-- Right side mil marks -->
+      <line x1="540" y1="297" x2="540" y2="303" stroke="rgba(212,168,71,0.5)" stroke-width="0.8"></line>
+      <circle cx="540" cy="300" r="1.5" fill="rgba(212,168,71,0.5)"></circle>
+      <line x1="580" y1="296" x2="580" y2="304" stroke="rgba(212,168,71,0.4)" stroke-width="0.7"></line>
+      <circle cx="580" cy="300" r="1.2" fill="rgba(212,168,71,0.35)"></circle>
+      <line x1="620" y1="296" x2="620" y2="304" stroke="rgba(212,168,71,0.3)" stroke-width="0.6"></line>
+      <line x1="660" y1="296" x2="660" y2="304" stroke="rgba(212,168,71,0.2)" stroke-width="0.5"></line>
+
+      <!-- ======= CHRISTMAS TREE - Below center ======= -->
+      <!-- Row 1: 1 mil down - narrow -->
+      <line x1="490" y1="340" x2="510" y2="340" stroke="rgba(212,168,71,0.55)" stroke-width="0.9"></line>
+      <circle cx="490" cy="340" r="1.3" fill="rgba(212,168,71,0.5)"></circle>
+      <circle cx="510" cy="340" r="1.3" fill="rgba(212,168,71,0.5)"></circle>
+      <!-- Small vertical tick -->
+      <line x1="500" y1="337" x2="500" y2="343" stroke="rgba(212,168,71,0.4)" stroke-width="0.6"></line>
+
+      <!-- Row 2: 2 mil down - wider -->
+      <line x1="484" y1="380" x2="516" y2="380" stroke="rgba(212,168,71,0.50)" stroke-width="0.9"></line>
+      <circle cx="484" cy="380" r="1.3" fill="rgba(212,168,71,0.45)"></circle>
+      <circle cx="500" cy="380" r="1.3" fill="rgba(212,168,71,0.45)"></circle>
+      <circle cx="516" cy="380" r="1.3" fill="rgba(212,168,71,0.45)"></circle>
+      <!-- Hash marks -->
+      <line x1="484" y1="377" x2="484" y2="383" stroke="rgba(212,168,71,0.35)" stroke-width="0.6"></line>
+      <line x1="516" y1="377" x2="516" y2="383" stroke="rgba(212,168,71,0.35)" stroke-width="0.6"></line>
+
+      <!-- Row 3: 3 mil down - wider still -->
+      <line x1="476" y1="420" x2="524" y2="420" stroke="rgba(212,168,71,0.45)" stroke-width="0.9"></line>
+      <circle cx="476" cy="420" r="1.3" fill="rgba(212,168,71,0.4)"></circle>
+      <circle cx="488" cy="420" r="1" fill="rgba(212,168,71,0.35)"></circle>
+      <circle cx="500" cy="420" r="1.3" fill="rgba(212,168,71,0.4)"></circle>
+      <circle cx="512" cy="420" r="1" fill="rgba(212,168,71,0.35)"></circle>
+      <circle cx="524" cy="420" r="1.3" fill="rgba(212,168,71,0.4)"></circle>
+      <line x1="476" y1="417" x2="476" y2="423" stroke="rgba(212,168,71,0.3)" stroke-width="0.6"></line>
+      <line x1="524" y1="417" x2="524" y2="423" stroke="rgba(212,168,71,0.3)" stroke-width="0.6"></line>
+
+      <!-- Row 4: 4 mil down - wider -->
+      <line x1="466" y1="460" x2="534" y2="460" stroke="rgba(212,168,71,0.40)" stroke-width="0.8"></line>
+      <circle cx="466" cy="460" r="1.3" fill="rgba(212,168,71,0.35)"></circle>
+      <circle cx="480" cy="460" r="1" fill="rgba(212,168,71,0.3)"></circle>
+      <circle cx="494" cy="460" r="1" fill="rgba(212,168,71,0.3)"></circle>
+      <circle cx="500" cy="460" r="1.3" fill="rgba(212,168,71,0.35)"></circle>
+      <circle cx="506" cy="460" r="1" fill="rgba(212,168,71,0.3)"></circle>
+      <circle cx="520" cy="460" r="1" fill="rgba(212,168,71,0.3)"></circle>
+      <circle cx="534" cy="460" r="1.3" fill="rgba(212,168,71,0.35)"></circle>
+      <line x1="466" y1="457" x2="466" y2="463" stroke="rgba(212,168,71,0.25)" stroke-width="0.6"></line>
+      <line x1="534" y1="457" x2="534" y2="463" stroke="rgba(212,168,71,0.25)" stroke-width="0.6"></line>
+
+      <!-- Row 5: 5 mil down - widest -->
+      <line x1="454" y1="500" x2="546" y2="500" stroke="rgba(212,168,71,0.35)" stroke-width="0.8"></line>
+      <circle cx="454" cy="500" r="1.3" fill="rgba(212,168,71,0.3)"></circle>
+      <circle cx="470" cy="500" r="1" fill="rgba(212,168,71,0.25)"></circle>
+      <circle cx="485" cy="500" r="1" fill="rgba(212,168,71,0.25)"></circle>
+      <circle cx="500" cy="500" r="1.3" fill="rgba(212,168,71,0.3)"></circle>
+      <circle cx="515" cy="500" r="1" fill="rgba(212,168,71,0.25)"></circle>
+      <circle cx="530" cy="500" r="1" fill="rgba(212,168,71,0.25)"></circle>
+      <circle cx="546" cy="500" r="1.3" fill="rgba(212,168,71,0.3)"></circle>
+      <line x1="454" y1="497" x2="454" y2="503" stroke="rgba(212,168,71,0.2)" stroke-width="0.6"></line>
+      <line x1="546" y1="497" x2="546" y2="503" stroke="rgba(212,168,71,0.2)" stroke-width="0.6"></line>
+
+      <!-- ======= UPPER VERTICAL MIL MARKS ======= -->
+      <circle cx="500" cy="260" r="1.5" fill="rgba(212,168,71,0.55)"></circle>
+      <line x1="496" y1="260" x2="504" y2="260" stroke="rgba(212,168,71,0.4)" stroke-width="0.7"></line>
+      <circle cx="500" cy="220" r="1.2" fill="rgba(212,168,71,0.35)"></circle>
+      <line x1="497" y1="220" x2="503" y2="220" stroke="rgba(212,168,71,0.3)" stroke-width="0.6"></line>
+      <circle cx="500" cy="180" r="1" fill="rgba(212,168,71,0.2)"></circle>
+      <circle cx="500" cy="140" r="0.8" fill="rgba(212,168,71,0.15)"></circle>
+
+      <!-- Subtle distance labels (ghosted) -->
+      <text x="550" y="343" font-family="Barlow Condensed, sans-serif" font-size="8" fill="rgba(212,168,71,0.15)" letter-spacing="1">1</text>
+      <text x="550" y="383" font-family="Barlow Condensed, sans-serif" font-size="8" fill="rgba(212,168,71,0.15)" letter-spacing="1">2</text>
+      <text x="550" y="423" font-family="Barlow Condensed, sans-serif" font-size="8" fill="rgba(212,168,71,0.15)" letter-spacing="1">3</text>
+      <text x="550" y="463" font-family="Barlow Condensed, sans-serif" font-size="8" fill="rgba(212,168,71,0.15)" letter-spacing="1">4</text>
+      <text x="558" y="503" font-family="Barlow Condensed, sans-serif" font-size="8" fill="rgba(212,168,71,0.15)" letter-spacing="1">5</text>
+    </svg>
+  </div>
+
+
+
+  <!-- Mountain Silhouette -->
+  <div class="mountain-silhouette">
+    <svg viewBox="0 0 1440 400" preserveAspectRatio="none">
+      <path d="M0,400 L0,320 L80,280 L160,300 L240,250 L320,270 L400,200 L480,230 L560,180 L640,210 L720,150 L800,190 L880,130 L960,170 L1040,120 L1120,160 L1200,110 L1280,150 L1360,100 L1440,140 L1440,400 Z" fill="rgba(92,107,82,0.04)"></path>
+      <path d="M0,400 L0,350 L120,310 L240,330 L360,280 L480,300 L600,260 L720,290 L840,240 L960,270 L1080,230 L1200,260 L1320,220 L1440,250 L1440,400 Z" fill="rgba(42,45,46,0.3)"></path>
+    </svg>
+  </div>
+
+  <!-- Hero Content -->
+  <div class="hero-content">
+    <div class="tagline-top">Distance Calling</div>
+    <h1 class="logo-title">SPOTTER<span>CALL</span></h1>
+    <div class="subtitle">A Spotter In Your Ear</div>
+    <p class="hero-description">
+      The first voice-activated ballistic spotter app. Call out a distance through your earbuds. Hear the hold. Hands on rifle. Eyes downrange. Always.
+    </p>
+    <div class="cta-group">
+      <a href="#waitlist" class="cta-btn cta-primary">Join the Waitlist</a>
+      <a href="https://spottercall.com" class="cta-btn cta-secondary" target="_blank">Try the Beta</a>
+    </div>
+  </div>
+
+  <div class="scroll-indicator">
+    <svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"></polyline></svg>
+  </div>
+</section>
+
+<!-- ============ HOW IT WORKS ============ -->
+<section class="section">
+  <div class="section-label">How It Works</div>
+  <h2 class="section-title">Talk. Shoot. Hit.</h2>
+  <p class="section-subtitle">
+    Pair your earbuds. Load your profile. Call a distance. SpotterCall does the rest.
+  </p>
+
+  <div class="voice-demo">
+    <div class="voice-line">
+      <span class="voice-label shooter">You</span>
+      <span class="voice-text">"225 yards"</span>
+    </div>
+    <div class="voice-line">
+      <span class="voice-label app">SpotterCall</span>
+      <span class="voice-text"><em>"Up 8.7"</em></span>
+    </div>
+    <div class="voice-line">
+      <span class="voice-label shooter">You</span>
+      <span class="voice-text">"Hit. Two inches left"</span>
+    </div>
+    <div class="voice-line">
+      <span class="voice-label app">SpotterCall</span>
+      <span class="voice-text"><em>"Come right 0.2 mil. Send it again"</em></span>
+    </div>
+    <div class="voice-line">
+      <span class="voice-label shooter">You</span>
+      <span class="voice-text">"Center hit"</span>
+    </div>
+    <div class="voice-line">
+      <span class="voice-label app">SpotterCall</span>
+      <span class="voice-text"><em>"Good hit. Same hold."</em></span>
+    </div>
+    <div class="waveform"><div class="wave-bar" style="animation-delay: 0s; height: 15.477971601971948px"></div><div class="wave-bar" style="animation-delay: 0.08s; height: 12.487257249065348px"></div><div class="wave-bar" style="animation-delay: 0.16s; height: 5.630137062895935px"></div><div class="wave-bar" style="animation-delay: 0.24s; height: 8.827149437222124px"></div><div class="wave-bar" style="animation-delay: 0.32s; height: 11.977890465364057px"></div><div class="wave-bar" style="animation-delay: 0.4s; height: 10.176798698788934px"></div><div class="wave-bar" style="animation-delay: 0.48s; height: 4.581313666705606px"></div><div class="wave-bar" style="animation-delay: 0.56s; height: 14.075955728854378px"></div><div class="wave-bar" style="animation-delay: 0.64s; height: 6.517338157008625px"></div><div class="wave-bar" style="animation-delay: 0.72s; height: 10.334760384942077px"></div><div class="wave-bar" style="animation-delay: 0.8s; height: 13.869309668908372px"></div><div class="wave-bar" style="animation-delay: 0.88s; height: 13.681815401947699px"></div><div class="wave-bar" style="animation-delay: 0.96s; height: 15.314609350388752px"></div><div class="wave-bar" style="animation-delay: 1.04s; height: 15.234603869664895px"></div><div class="wave-bar" style="animation-delay: 1.12s; height: 15.77739526488967px"></div><div class="wave-bar" style="animation-delay: 1.2s; height: 14.313374313895702px"></div><div class="wave-bar" style="animation-delay: 1.28s; height: 14.92803616605732px"></div><div class="wave-bar" style="animation-delay: 1.36s; height: 12.815623784705306px"></div><div class="wave-bar" style="animation-delay: 1.44s; height: 8.540120716233899px"></div><div class="wave-bar" style="animation-delay: 1.52s; height: 14.610629678168783px"></div><div class="wave-bar" style="animation-delay: 1.6s; height: 5.267813870032727px"></div><div class="wave-bar" style="animation-delay: 1.68s; height: 4.311274525210353px"></div><div class="wave-bar" style="animation-delay: 1.76s; height: 15.901079850653144px"></div><div class="wave-bar" style="animation-delay: 1.84s; height: 9.324410268081316px"></div><div class="wave-bar" style="animation-delay: 1.92s; height: 13.991953321580123px"></div><div class="wave-bar" style="animation-delay: 2s; height: 14.263454050094964px"></div><div class="wave-bar" style="animation-delay: 2.08s; height: 6.301359858561646px"></div><div class="wave-bar" style="animation-delay: 2.16s; height: 7.627619613468719px"></div><div class="wave-bar" style="animation-delay: 2.24s; height: 8.11078595505774px"></div><div class="wave-bar" style="animation-delay: 2.32s; height: 12.62046269927982px"></div><div class="wave-bar" style="animation-delay: 2.4s; height: 7.703320897917964px"></div><div class="wave-bar" style="animation-delay: 2.48s; height: 10.021942395532243px"></div><div class="wave-bar" style="animation-delay: 2.56s; height: 11.2524222214595px"></div><div class="wave-bar" style="animation-delay: 2.64s; height: 11.427708410658669px"></div><div class="wave-bar" style="animation-delay: 2.72s; height: 7.327358562927298px"></div><div class="wave-bar" style="animation-delay: 2.8000000000000003s; height: 12.937012198582625px"></div><div class="wave-bar" style="animation-delay: 2.88s; height: 15.870678172769342px"></div><div class="wave-bar" style="animation-delay: 2.96s; height: 11.121602139385832px"></div><div class="wave-bar" style="animation-delay: 3.04s; height: 10.697510176489136px"></div><div class="wave-bar" style="animation-delay: 3.12s; height: 5.2661484104562035px"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FEATURES ============ -->
+<section class="section" style="padding-top: 0;">
+  <div class="section-label">Features</div>
+  <h2 class="section-title">Your Gear. Your Data. Our Voice.</h2>
+  <p class="section-subtitle">
+    Import profiles from any ballistic app. Or pick from our built-in library. SpotterCall makes your data talk.
+  </p>
+
+  <div class="features-grid">
+    <div class="feature-card">
+      <svg class="feature-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M24 6v36M6 24h36M24 14v-2M24 36v2M14 24h-2M36 24h2"></path>
+        <circle cx="24" cy="24" r="12"></circle>
+      </svg>
+      <h3 class="feature-title">Voice Hold Calls</h3>
+      <p class="feature-desc">Call a distance in any increment. Hear the precise hold in MRAD or MOA instantly through your earbuds. No screen. No fumbling.</p>
+    </div>
+    <div class="feature-card">
+      <svg class="feature-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M8 36l8-12 6 8 8-16 10 20"></path>
+        <rect x="6" y="6" width="36" height="36" rx="4"></rect>
+      </svg>
+      <h3 class="feature-title">Import Any Profile</h3>
+      <p class="feature-desc">Bring your trued data from GeoBallistics, Applied Ballistics, Trasol, or any CSV. Your profiles. Your numbers. Our voice.</p>
+    </div>
+    <div class="feature-card">
+      <svg class="feature-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5">
+        <rect x="10" y="4" width="28" height="40" rx="4"></rect>
+        <circle cx="24" cy="38" r="2"></circle>
+        <path d="M18 12h12M18 18h8"></path>
+      </svg>
+      <h3 class="feature-title">Reference Library</h3>
+      <p class="feature-desc">Don't have custom data? Pick your caliber, bullet, and manufacturer from our built-in library. Instant holds for factory ammo.</p>
+    </div>
+    <div class="feature-card">
+      <svg class="feature-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5">
+        <circle cx="24" cy="24" r="6"></circle>
+        <circle cx="24" cy="24" r="14"></circle>
+        <path d="M24 10V4M24 44v-6M10 24H4M44 24h-6"></path>
+        <circle cx="20" cy="20" r="1.5" fill="currentColor"></circle>
+      </svg>
+      <h3 class="feature-title">Shot Correction</h3>
+      <p class="feature-desc">Tell SpotterCall where you hit. It calculates the correction and calls the adjusted hold. Like having a spotter on the glass.</p>
+    </div>
+    <div class="feature-card">
+      <svg class="feature-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M24 8a16 16 0 0 1 0 32 16 16 0 0 1 0-32"></path>
+        <path d="M24 14v10l7 7"></path>
+        <path d="M36 12l4-4M12 12L8 8"></path>
+      </svg>
+      <h3 class="feature-title">Live Weather</h3>
+      <p class="feature-desc">GPS-based atmospheric conditions. SpotterCall flags when temperature, pressure, or altitude shift enough to change your holds.</p>
+    </div>
+    <div class="feature-card">
+      <svg class="feature-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M16 20c0-4.4 3.6-8 8-8s8 3.6 8 8v4c0 2-1 4-3 5l-1 1v4h-8v-4l-1-1c-2-1-3-3-3-5v-4z"></path>
+        <path d="M20 40h8M22 44h4"></path>
+        <path d="M14 16c-2 2-3 5-3 8M34 16c2 2 3 5 3 8"></path>
+      </svg>
+      <h3 class="feature-title">Any Earbuds</h3>
+      <p class="feature-desc">AirPods, Galaxy Buds, or any Bluetooth earbuds you already own. Pair and go. SpotterCall works with whatever's in your ear.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ TARGET / STATS ============ -->
+<section class="target-section">
+  <div class="target-bg">
+    <div class="target-rings">
+      <div class="target-ring"></div>
+      <div class="target-ring"></div>
+      <div class="target-ring"></div>
+      <div class="target-ring"></div>
+      <div class="target-ring"></div>
+      <div class="target-ring"></div>
+    </div>
+  </div>
+  <div class="target-content">
+    <div class="section-label">By The Numbers</div>
+    <h2 class="section-title">Built for Precision</h2>
+    <div class="stat-grid">
+      <div>
+        <div class="stat-number">0.1</div>
+        <div class="stat-label">MRAD Interpolation</div>
+      </div>
+      <div>
+        <div class="stat-number">&lt;1s</div>
+        <div class="stat-label">Voice Response Time</div>
+      </div>
+      <div>
+        <div class="stat-number">300+</div>
+        <div class="stat-label">Yards .22 LR Tested</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ USE CASES ============ -->
+<section class="section">
+  <div class="section-label">Who It's For</div>
+  <h2 class="section-title">Every Shooter. Every Distance.</h2>
+  <div class="use-cases">
+    <div class="use-case">
+      <span class="use-case-icon">🎯</span>
+      <h3 class="use-case-title">Competitors</h3>
+      <p class="use-case-desc">PRS, NRL22, F-Class, and Palma shooters. Import your trued profiles and get voice calls at the line. Hands free. Eyes on target.</p>
+    </div>
+    <div class="use-case">
+      <span class="use-case-icon">🦌</span>
+      <h3 class="use-case-title">Hunters</h3>
+      <p class="use-case-desc">Pick your factory load from the library. Whisper a distance. Get the hold. Take the shot. No phone screen glowing in the blind.</p>
+    </div>
+    <div class="use-case">
+      <span class="use-case-icon">💥</span>
+      <h3 class="use-case-title">Range Shooters</h3>
+      <p class="use-case-desc">Stretching past 200 for the first time? SpotterCall makes long range accessible without a ballistics degree.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PHONE MOCKUP ============ -->
+<section class="phone-section">
+  <div class="phone-mockup">
+    <div class="phone-notch"></div>
+    <div class="phone-screen">
+      <div class="phone-header">
+        <div class="phone-app-name">SpotterCall</div>
+        <div class="phone-profile">Match .22 • 40gr • 50yd Zero</div>
+      </div>
+      <div class="phone-body">
+        <div class="phone-chat-line">
+          <span class="phone-chat-label you">You</span>
+          <div class="phone-chat-bubble you-msg">175 yards</div>
+        </div>
+        <div class="phone-chat-line">
+          <span class="phone-chat-label ai">SpotterCall</span>
+          <div class="phone-chat-bubble ai-msg">Up 5.3</div>
+        </div>
+        <div class="phone-chat-line">
+          <span class="phone-chat-label you">You</span>
+          <div class="phone-chat-bubble you-msg">Hit, 1 inch right</div>
+        </div>
+        <div class="phone-chat-line">
+          <span class="phone-chat-label ai">SpotterCall</span>
+          <div class="phone-chat-bubble ai-msg">Left 0.2. Send it.</div>
+        </div>
+      </div>
+      <div class="phone-footer">
+        <div class="mic-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3zM19 10v2a7 7 0 0 1-14 0v-2M12 19v4M8 23h8"></path></svg>
+        </div>
+        <span class="mic-label">Listening...</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="phone-text-content">
+    <div class="section-label">Your Pocket Spotter</div>
+    <h2 class="section-title">A Spotter That<br>Never Misses</h2>
+    <p class="section-subtitle" style="margin-bottom: 24px;">
+      SpotterCall lives on your phone and speaks through your earbuds. Every hold. Every correction. Every time. No subscription to a human spotter. No screen in your face.
+    </p>
+    <div class="earbuds-note">
+      <svg class="earbuds-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5">
+        <circle cx="16" cy="28" r="6"></circle>
+        <circle cx="32" cy="28" r="6"></circle>
+        <path d="M16 22v-6a8 8 0 0 1 16 0v6"></path>
+        <path d="M16 34v4M32 34v4"></path>
+      </svg>
+      <p class="earbuds-text">
+        Works with <strong>any Bluetooth earbuds</strong> you already own. AirPods, Galaxy Buds, Jabra — if it pairs, it works.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ THE STORY ============ -->
+<section class="section" id="story">
+  <div class="section-label">The Story</div>
+  <h2 class="section-title">Built at the Line. Not in a Lab.</h2>
+  <div style="display:grid; grid-template-columns:1fr 1fr; gap:48px; max-width:900px; align-items:center;">
+    <div>
+      <div style="border:1px solid rgba(212,168,71,0.15); border-radius:2px; overflow:hidden; margin-bottom:8px;">
+        <img src="story-1980.jpg" alt="Humphreys County Junior 4-H District Champion Rifle Team, Belzoni MS 1980" style="width:100%; display:block; filter:grayscale(30%) contrast(1.05);" onerror="this.parentElement.innerHTML='<div style=\'aspect-ratio:4/3;background:var(--charcoal);display:flex;align-items:center;justify-content:center;color:rgba(212,168,71,0.25);font-family:Barlow Condensed,sans-serif;font-size:11px;letter-spacing:2px;\'>BELZONI, MS · 1980</div>'">
+      </div>
+      <p style="font-family:'Barlow Condensed',sans-serif; font-size:11px; letter-spacing:2px; color:rgba(212,168,71,0.4); text-align:center;">TRIPPE FRANCIS · CRAIG TATE · MIKE FRANCIS · BELZONI, MS · 1980</p>
+    </div>
+    <div>
+      <p style="font-weight:300; font-size:17px; line-height:1.8; color:rgba(240,234,214,0.6); margin-bottom:20px;">
+        SpotterCall wasn't built in a lab. It was built by people with time on the trigger.
+        It started in Belzoni, Mississippi — Trippe Francis, Craig Tate, and Mike Francis,
+        Humphreys County Junior 4-H District Champions, 1980.
+      </p>
+      <p style="font-weight:300; font-size:17px; line-height:1.8; color:rgba(240,234,214,0.6); margin-bottom:24px;">
+        More than four decades later, we're still at the line. Still shooting the Southwest Nationals
+        at Ben Avery in Phoenix. Still cleaning targets. No 9s.
+      </p>
+      <div style="display:flex; align-items:center; gap:8px; justify-content:center;">
+        <span style="width:28px; height:1px; background:var(--amber); opacity:0.35;"></span>
+        <span style="width:6px; height:6px; border:1px solid var(--amber); transform:rotate(45deg); opacity:0.55;"></span>
+        <span style="width:28px; height:1px; background:var(--amber); opacity:0.35;"></span>
+      </div>
+      <p style="font-family:'Barlow Condensed',sans-serif; font-size:12px; letter-spacing:2px; color:rgba(212,168,71,0.35); text-align:center; margin-top:12px;">Mike Francis competes on the US FTR Rifle Team — England, South Africa, Scotland.</p>
+    </div>
+  </div>
+  <div style="max-width:900px; margin:48px auto 0;">
+    <div style="border:1px solid rgba(212,168,71,0.15); border-radius:2px; overflow:hidden; margin-bottom:8px; max-width:440px; margin-left:auto;">
+      <img src="story-range.jpg" alt="Southwest Nationals, Ben Avery Shooting Complex, Phoenix AZ" style="width:100%; display:block;">
+    </div>
+    <p style="font-family:'Barlow Condensed',sans-serif; font-size:11px; letter-spacing:2px; color:rgba(212,168,71,0.4); text-align:right; max-width:440px; margin-left:auto;">SOUTHWEST NATIONALS · BEN AVERY SHOOTING COMPLEX · PHOENIX, AZ</p>
+  </div>
+</section>
+
+<!-- ============ CTA / WAITLIST ============ -->
+<section class="cta-section" id="waitlist">
+  <div class="section-label">Get Started</div>
+  <h2 class="section-title">Ready to Ring Steel?</h2>
+  <p class="hero-description">
+    SpotterCall is in beta now. Join the waitlist for the full iOS and Android launch.
+  </p>
+  <div class="cta-group">
+    <a href="https://spottercall.com" class="cta-btn cta-primary" target="_blank">Try the Beta</a>
+    <a href="https://www.instagram.com/spottercall" class="cta-btn cta-secondary" target="_blank">Follow @spottercall</a>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer>
+  <div class="footer-logo">SPOTTER<span style="color: var(--amber)">CALL</span></div>
+  <p class="footer-legal">© 2026 Franco LLC • Madison, Mississippi • Patent Pending</p>
+  <a href="https://www.instagram.com/spottercall" target="_blank" rel="noopener" style="display:inline-flex; align-items:center; justify-content:center; margin-top:12px; color:var(--amber); opacity:0.5; transition:opacity 0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.5'">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="2" y="2" width="20" height="20" rx="5.5" stroke="currentColor" stroke-width="1.6"/>
+      <circle cx="12" cy="12" r="4.5" stroke="currentColor" stroke-width="1.6"/>
+      <circle cx="17.5" cy="6.5" r="1.1" fill="currentColor"/>
+    </svg>
+  </a>
+</footer>
+
+
+
+</body></html>
