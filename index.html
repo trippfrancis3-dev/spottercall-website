@@ -393,6 +393,10 @@
     position: relative;
     transition: all 0.4s ease;
     border: 1px solid rgba(255,255,255,0.03);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
 
   .feature-card:hover {
@@ -409,17 +413,17 @@
 
   .feature-title {
     font-family: 'Bebas Neue', sans-serif;
-    font-size: 28px;
-    letter-spacing: 1px;
-    color: var(--white);
-    margin-bottom: 12px;
+    font-size: 32px;
+    letter-spacing: 2px;
+    color: var(--amber-glow);
+    margin-bottom: 14px;
   }
 
   .feature-desc {
     font-weight: 300;
     font-size: 15px;
-    line-height: 1.7;
-    color: rgba(240, 234, 214, 0.45);
+    line-height: 1.75;
+    color: rgba(240, 234, 214, 0.6);
   }
 
   /* ========== TARGET SECTION ========== */
@@ -777,16 +781,16 @@
 
   .footer-logo {
     font-family: 'Bebas Neue', sans-serif;
-    font-size: 24px;
-    letter-spacing: 2px;
-    color: var(--gunmetal);
-    margin-bottom: 8px;
+    font-size: 28px;
+    letter-spacing: 3px;
+    color: rgba(240, 234, 214, 0.55);
+    margin-bottom: 10px;
   }
 
   .footer-legal {
     font-size: 12px;
-    color: rgba(240, 234, 214, 0.15);
-    letter-spacing: 1px;
+    color: rgba(240, 234, 214, 0.45);
+    letter-spacing: 1.5px;
   }
 
   /* ========== ELK SILHOUETTE ========== */
@@ -944,11 +948,11 @@
 
   <!-- Hero Content -->
   <div class="hero-content">
-    <div class="tagline-top">Distance Calling</div>
+    <div class="tagline-top">Call Your Distance</div>
     <h1 class="logo-title">SPOTTER<span>CALL</span></h1>
     <div class="subtitle">A Spotter In Your Ear</div>
     <p class="hero-description">
-      The first voice-activated ballistic spotter app. Call out a distance through your earbuds. Hear the hold. Hands on rifle. Eyes downrange. Always.
+      The first voice-activated ballistic spotter app. Call your distance. Hear the hold. Hands on the rifle. Eyes downrange. Always.
     </p>
     <div class="cta-group">
       <a href="#waitlist" class="cta-btn cta-primary">Join the Waitlist</a>
@@ -964,9 +968,9 @@
 <!-- ============ HOW IT WORKS ============ -->
 <section class="section">
   <div class="section-label">How It Works</div>
-  <h2 class="section-title">Talk. Shoot. Hit.</h2>
+  <h2 class="section-title">Call Your Distance. Hear Your Hold.</h2>
   <p class="section-subtitle">
-    Pair your earbuds. Load your profile. Call a distance. SpotterCall does the rest.
+    Pair your earbuds. Load your profile. Call your distance. SpotterCall speaks the hold back to you — instant, hands-free, eyes downrange.
   </p>
 
   <div class="voice-demo">
@@ -994,9 +998,9 @@
 <!-- ============ FEATURES ============ -->
 <section class="section" style="padding-top: 0;">
   <div class="section-label">Features</div>
-  <h2 class="section-title">Your Gear. Your Data. Our Voice.</h2>
-  <p class="section-subtitle">
-    Import profiles from any ballistic app. Or pick from our built-in library. SpotterCall makes your data talk.
+  <h2 class="section-title" style="text-align:center;">Your Gear. Your Data. Our Call.</h2>
+  <p class="section-subtitle" style="margin-left:auto; margin-right:auto; text-align:center;">
+    Import profiles from any ballistic app. Or pick from our built-in library. SpotterCall calls it back to you.
   </p>
 
   <div class="features-grid">
@@ -1081,10 +1085,14 @@
         <div class="stat-label">Voice Response Time</div>
       </div>
       <div>
-        <div class="stat-number">300+</div>
-        <div class="stat-label">Yards .22 LR Tested</div>
+        <div class="stat-number">1,000+</div>
+        <div class="stat-label">Yards · Any Caliber</div>
       </div>
     </div>
+    <!-- Caliber callout -->
+    <p style="margin-top:40px; font-family:'Barlow Condensed',sans-serif; font-size:12px; letter-spacing:3px; color:rgba(212,168,71,0.45); text-transform:uppercase;">
+      .22 LR &nbsp;·&nbsp; .308 Win &nbsp;·&nbsp; 300 PRC &nbsp;·&nbsp; 6.5 CM &nbsp;·&nbsp; .270 Win &nbsp;·&nbsp; 7mm Rem Mag &nbsp;·&nbsp; 5.56 &nbsp;·&nbsp; And More
+    </p>
   </div>
 </section>
 
@@ -1265,7 +1273,7 @@
 <footer>
   <div class="footer-logo">SPOTTER<span style="color: var(--amber)">CALL</span></div>
   <p class="footer-legal">© 2026 Franco LLC • Madison, Mississippi • Patent Pending</p>
-  <a href="https://www.instagram.com/spottercall" target="_blank" rel="noopener" style="display:inline-flex; align-items:center; justify-content:center; margin-top:12px; color:var(--amber); opacity:0.5; transition:opacity 0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.5'">
+  <a href="https://www.instagram.com/spottercall" target="_blank" rel="noopener" style="display:inline-flex; align-items:center; justify-content:center; margin-top:12px; color:var(--amber); opacity:0.75; transition:opacity 0.2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.75'">
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
       <rect x="2" y="2" width="20" height="20" rx="5.5" stroke="currentColor" stroke-width="1.6"/>
       <circle cx="12" cy="12" r="4.5" stroke="currentColor" stroke-width="1.6"/>
