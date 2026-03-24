@@ -5,7 +5,7 @@
 <title>SpotterCall — Distance Calling</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@300;400;500;600;700&family=Barlow+Condensed:wght@300;400;500;600;700&family=Bebas+Neue&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@300;400;500;600;700&family=Barlow+Condensed:wght@300;400;500;600;700&family=Bebas+Neue&family=Lora:ital,wght@0,400;0,500;1,400;1,500&display=swap" rel="stylesheet">
 <style>
   :root {
     --black: #0A0A0A;
@@ -1178,50 +1178,97 @@
 <!-- ============ THE STORY ============ -->
 <section class="section" id="story">
   <div class="section-label">The Story</div>
-  <h2 class="section-title">Time on the Trigger.</h2>
 
-  <!-- Story copy -->
-  <div style="max-width:700px; margin:0 auto 48px; text-align:center;">
-    <p style="font-weight:300; font-size:18px; line-height:1.85; color:rgba(240,234,214,0.65); margin-bottom:28px;">
-      SpotterCall wasn't built in a lab. It was built by brothers who grew up at the line.
-      Trippe and Mike Francis. Belzoni, Mississippi, 1980. Humphreys County Junior 4-H
-      District Champions — and still at it.
-    </p>
+  <!-- Three-column storybook layout: photo | narrative | photo -->
+  <div style="display:grid; grid-template-columns:1fr 420px 1fr; gap:40px; max-width:1200px; margin:0 auto; align-items:center;">
 
-    <!-- Pull quote -->
-    <div style="border-left:2px solid var(--amber); padding:16px 24px; margin:0 auto 28px; max-width:560px; text-align:left;">
-      <p style="font-family:'Barlow Condensed',sans-serif; font-size:22px; letter-spacing:0.04em; color:var(--amber); font-style:italic; line-height:1.4; margin-bottom:6px;">"Time on the trigger."</p>
-      <p style="font-family:'Barlow Condensed',sans-serif; font-size:11px; letter-spacing:2px; color:rgba(212,168,71,0.45);">SHOOTERS KNOW WHAT THAT MEANS.</p>
+    <!-- LEFT PHOTO: 1980 -->
+    <div style="display:flex; flex-direction:column; align-items:flex-end;">
+      <div style="border:1px solid rgba(212,168,71,0.18); border-radius:2px; overflow:hidden; margin-bottom:10px; width:100%; max-width:340px; box-shadow:0 8px 40px rgba(0,0,0,0.55);">
+        <img src="story-1980.jpg" alt="Trippe and Mike Francis, Belzoni MS 1980"
+          style="width:100%; display:block; filter:sepia(20%) contrast(1.05) brightness(0.95);"
+          onerror="this.parentElement.innerHTML='<div style=\'aspect-ratio:3/4;background:var(--charcoal);display:flex;align-items:center;justify-content:center;color:rgba(212,168,71,0.25);font-family:Barlow Condensed,sans-serif;font-size:11px;letter-spacing:2px;\'>BELZONI, MS · 1980</div>'">
+      </div>
+      <p style="font-family:'Barlow Condensed',sans-serif; font-size:10px; letter-spacing:2.5px; color:rgba(212,168,71,0.3); text-align:right; max-width:340px;">TRIPPE & MIKE FRANCIS · BELZONI, MS · 1980</p>
     </div>
 
-    <p style="font-weight:300; font-size:18px; line-height:1.85; color:rgba(240,234,214,0.65); margin-bottom:28px;">
-      More than four decades later, still shooting competitively wherever the opportunity calls —
-      from the gun line in Mississippi to anywhere in the nation.
-      Still cleaning targets. Chasing Xs. No nines.
-    </p>
-    <div style="display:flex; align-items:center; gap:8px; justify-content:center; margin-bottom:20px;">
-      <span style="width:28px; height:1px; background:var(--amber); opacity:0.35;"></span>
-      <span style="width:6px; height:6px; border:1px solid var(--amber); transform:rotate(45deg); opacity:0.55;"></span>
-      <span style="width:28px; height:1px; background:var(--amber); opacity:0.35;"></span>
+    <!-- CENTER: Storybook narrative -->
+    <div style="text-align:center; padding:16px 0;">
+
+      <!-- Section eyebrow -->
+      <p style="font-family:'Barlow Condensed',sans-serif; font-size:10px; letter-spacing:3px; color:rgba(212,168,71,0.4); margin-bottom:24px; text-transform:uppercase;">Mississippi · 1980 — Phoenix · 2025</p>
+
+      <!-- Opening line in serif -->
+      <p style="font-family:'Lora',serif; font-size:17px; font-style:italic; line-height:1.9; color:rgba(240,234,214,0.55); margin-bottom:28px;">
+        Two brothers. One gun line.<br>Four decades of not missing.
+      </p>
+
+      <!-- Amber rule -->
+      <div style="display:flex; align-items:center; gap:10px; justify-content:center; margin-bottom:28px;">
+        <span style="flex:1; height:1px; background:linear-gradient(to right, transparent, rgba(212,168,71,0.25));"></span>
+        <span style="width:5px; height:5px; border:1px solid rgba(212,168,71,0.5); transform:rotate(45deg); display:inline-block;"></span>
+        <span style="flex:1; height:1px; background:linear-gradient(to left, transparent, rgba(212,168,71,0.25));"></span>
+      </div>
+
+      <!-- The headline / pull quote -->
+      <div style="margin-bottom:28px;">
+        <h2 style="font-family:'Lora',serif; font-size:38px; font-style:italic; font-weight:500; color:var(--amber); line-height:1.2; margin-bottom:10px; letter-spacing:-0.01em;">Time on the Trigger.</h2>
+        <p style="font-family:'Barlow Condensed',sans-serif; font-size:10px; letter-spacing:3px; color:rgba(212,168,71,0.35);">SHOOTERS KNOW WHAT THAT MEANS.</p>
+      </div>
+
+      <!-- Amber rule -->
+      <div style="display:flex; align-items:center; gap:10px; justify-content:center; margin-bottom:28px;">
+        <span style="flex:1; height:1px; background:linear-gradient(to right, transparent, rgba(212,168,71,0.25));"></span>
+        <span style="width:5px; height:5px; border:1px solid rgba(212,168,71,0.5); transform:rotate(45deg); display:inline-block;"></span>
+        <span style="flex:1; height:1px; background:linear-gradient(to left, transparent, rgba(212,168,71,0.25));"></span>
+      </div>
+
+      <!-- Body narrative in serif -->
+      <p style="font-family:'Lora',serif; font-size:15.5px; line-height:2; color:rgba(240,234,214,0.6); margin-bottom:24px;">
+        Trippe and Mike Francis grew up at the line in Belzoni, Mississippi — Humphreys County Junior 4-H District Champions before most kids had ever heard a shot break clean.
+      </p>
+      <p style="font-family:'Lora',serif; font-size:15.5px; line-height:2; color:rgba(240,234,214,0.6); margin-bottom:32px;">
+        More than four decades later, still shooting competitively wherever the opportunity calls — from the gun line in Mississippi to anywhere in the nation. Still cleaning targets. Chasing Xs. No nines.
+      </p>
+
+      <!-- Footer note -->
+      <div style="display:flex; align-items:center; gap:10px; justify-content:center; margin-bottom:16px;">
+        <span style="flex:1; height:1px; background:linear-gradient(to right, transparent, rgba(212,168,71,0.15));"></span>
+        <span style="width:4px; height:4px; background:rgba(212,168,71,0.3); transform:rotate(45deg); display:inline-block;"></span>
+        <span style="flex:1; height:1px; background:linear-gradient(to left, transparent, rgba(212,168,71,0.15));"></span>
+      </div>
+      <p style="font-family:'Barlow Condensed',sans-serif; font-size:10px; letter-spacing:2.5px; color:rgba(212,168,71,0.3);">MIKE FRANCIS COMPETES ON THE US FTR RIFLE TEAM</p>
     </div>
-    <p style="font-family:'Barlow Condensed',sans-serif; font-size:12px; letter-spacing:2px; color:rgba(212,168,71,0.4);">MIKE FRANCIS COMPETES ON THE US FTR RIFLE TEAM</p>
+
+    <!-- RIGHT PHOTO: Southwest Nationals -->
+    <div style="display:flex; flex-direction:column; align-items:flex-start;">
+      <div style="border:1px solid rgba(212,168,71,0.18); border-radius:2px; overflow:hidden; margin-bottom:10px; width:100%; max-width:340px; box-shadow:0 8px 40px rgba(0,0,0,0.55);">
+        <img src="story-range.jpg" alt="Trippe and Mike Francis, Southwest Nationals, Ben Avery Phoenix AZ"
+          style="width:100%; display:block; object-fit:cover; aspect-ratio:3/4;">
+      </div>
+      <p style="font-family:'Barlow Condensed',sans-serif; font-size:10px; letter-spacing:2.5px; color:rgba(212,168,71,0.3); text-align:left; max-width:340px;">SOUTHWEST NATIONALS · BEN AVERY · PHOENIX, AZ</p>
+    </div>
+
   </div>
 
-  <!-- Side-by-side photos -->
-  <div style="display:grid; grid-template-columns:1fr 1fr; gap:20px; max-width:900px; margin:0 auto;">
-    <div>
-      <div style="border:1px solid rgba(212,168,71,0.15); border-radius:2px; overflow:hidden; margin-bottom:8px;">
-        <img src="story-1980.jpg" alt="Trippe and Mike Francis, Belzoni MS 1980" style="width:100%; display:block; filter:grayscale(25%) contrast(1.05);" onerror="this.parentElement.innerHTML='<div style=\'aspect-ratio:4/3;background:var(--charcoal);display:flex;align-items:center;justify-content:center;color:rgba(212,168,71,0.25);font-family:Barlow Condensed,sans-serif;font-size:11px;letter-spacing:2px;\'>BELZONI, MS · 1980</div>'">
-      </div>
-      <p style="font-family:'Barlow Condensed',sans-serif; font-size:11px; letter-spacing:2px; color:rgba(212,168,71,0.35); text-align:center;">TRIPPE & MIKE FRANCIS · BELZONI, MS · 1980</p>
-    </div>
-    <div>
-      <div style="border:1px solid rgba(212,168,71,0.15); border-radius:2px; overflow:hidden; margin-bottom:8px;">
-        <img src="story-range.jpg" alt="Trippe and Mike Francis, Southwest Nationals, Ben Avery Phoenix AZ" style="width:100%; display:block; object-fit:cover; aspect-ratio:4/3;">
-      </div>
-      <p style="font-family:'Barlow Condensed',sans-serif; font-size:11px; letter-spacing:2px; color:rgba(212,168,71,0.35); text-align:center;">SOUTHWEST NATIONALS · BEN AVERY · PHOENIX, AZ</p>
-    </div>
-  </div>
+  <!-- Mobile fallback: stack photos below text on small screens -->
+  <style>
+    @media (max-width: 900px) {
+      #story > div[style*="grid-template-columns"] {
+        grid-template-columns: 1fr !important;
+        max-width: 480px !important;
+      }
+      #story > div[style*="grid-template-columns"] > div:first-child,
+      #story > div[style*="grid-template-columns"] > div:last-child {
+        align-items: center !important;
+      }
+      #story > div[style*="grid-template-columns"] > div:first-child p,
+      #story > div[style*="grid-template-columns"] > div:last-child p {
+        text-align: center !important;
+      }
+    }
+  </style>
+
 </section>
 
 <!-- ============ CTA / WAITLIST ============ -->
