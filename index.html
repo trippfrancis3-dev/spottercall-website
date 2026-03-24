@@ -1121,46 +1121,18 @@
 
 <!-- ============ PHONE MOCKUP ============ -->
 <section class="phone-section">
-  <div class="phone-mockup">
-    <div class="phone-notch"></div>
-    <div class="phone-screen">
-      <div class="phone-header">
-        <div class="phone-app-name">SpotterCall</div>
-        <div class="phone-profile">Match .22 · 40gr · 100yd Zero</div>
-      </div>
-      <div class="phone-body">
-        <div class="phone-chat-line">
-          <span class="phone-chat-label you">You</span>
-          <div class="phone-chat-bubble you-msg">275 yards</div>
-        </div>
-        <div class="phone-chat-line">
-          <span class="phone-chat-label ai">SpotterCall</span>
-          <div class="phone-chat-bubble ai-msg">Up 9.1</div>
-        </div>
-        <div class="phone-chat-line">
-          <span class="phone-chat-label you">You</span>
-          <div class="phone-chat-bubble you-msg">Hit, inch low</div>
-        </div>
-        <div class="phone-chat-line">
-          <span class="phone-chat-label ai">SpotterCall</span>
-          <div class="phone-chat-bubble ai-msg">Up 0.3. Send it.</div>
-        </div>
-        <div class="phone-chat-line">
-          <span class="phone-chat-label you">You</span>
-          <div class="phone-chat-bubble you-msg">Center X</div>
-        </div>
-        <div class="phone-chat-line">
-          <span class="phone-chat-label ai">SpotterCall</span>
-          <div class="phone-chat-bubble ai-msg">Good hit. Same hold.</div>
-        </div>
-      </div>
-      <div class="phone-footer">
-        <div class="mic-icon">
-          <svg viewBox="0 0 24 24"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3zM19 10v2a7 7 0 0 1-14 0v-2M12 19v4M8 23h8"></path></svg>
-        </div>
-        <span class="mic-label">Listening...</span>
-      </div>
+  <!-- Real app screenshot in a phone frame -->
+  <div style="position:relative; flex-shrink:0;">
+    <!-- Outer phone shell -->
+    <div style="width:290px; background:#111; border-radius:46px; border:2px solid #2a2a2a; box-shadow:0 40px 80px rgba(0,0,0,0.65), 0 0 0 1px rgba(255,255,255,0.06), inset 0 0 0 1px rgba(255,255,255,0.03); overflow:hidden; padding:10px;">
+      <!-- Dynamic island -->
+      <div style="width:110px; height:30px; background:#000; border-radius:0 0 18px 18px; margin:0 auto 0; position:relative; z-index:2;"></div>
+      <!-- Screenshot -->
+      <img src="app-screenshot.png" alt="SpotterCall app — Match .22, 200yd, U6.8 MRAD hold"
+        style="width:100%; display:block; border-radius:6px; margin-top:-2px;">
     </div>
+    <!-- Ambient glow under phone -->
+    <div style="position:absolute; bottom:-20px; left:50%; transform:translateX(-50%); width:200px; height:40px; background:radial-gradient(ellipse, rgba(212,168,71,0.18) 0%, transparent 70%); pointer-events:none;"></div>
   </div>
 
   <div class="phone-text-content">
