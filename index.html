@@ -26,7 +26,18 @@
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
   body {
-    background: var(--black);
+    background:
+      /* Top sage glow — drapes over the hero */
+      radial-gradient(ellipse 100% 38% at 50% 5%, rgba(92, 107, 82, 0.30) 0%, transparent 65%),
+      /* Right-mid gold warmth — over Features / Built for Precision area */
+      radial-gradient(ellipse 70% 38% at 80% 40%, rgba(212, 168, 71, 0.20) 0%, transparent 65%),
+      /* Left lower-mid sage — over Use Cases / Spotter AI section */
+      radial-gradient(ellipse 65% 35% at 20% 65%, rgba(92, 107, 82, 0.26) 0%, transparent 65%),
+      /* Bottom gold halo — over Story + Get Started */
+      radial-gradient(ellipse 90% 32% at 50% 93%, rgba(212, 168, 71, 0.16) 0%, transparent 65%),
+      /* Dramatic vertical fade — lighter peaks at top + mid + lower-mid, deeper valleys between */
+      linear-gradient(180deg, #121412 0%, #0A0A0A 18%, #0F1110 38%, #080808 55%, #0E100E 75%, #0A0A0A 100%);
+    background-attachment: fixed;
     color: var(--white);
     font-family: 'Barlow', sans-serif;
     overflow-x: hidden;
@@ -46,19 +57,19 @@
   .hero-bg {
     position: absolute;
     inset: 0;
-    background: 
+    background:
       radial-gradient(ellipse 80% 60% at 50% 40%, rgba(92, 107, 82, 0.15) 0%, transparent 70%),
-      radial-gradient(ellipse 40% 50% at 70% 50%, rgba(212, 168, 71, 0.05) 0%, transparent 60%),
-      linear-gradient(180deg, var(--black) 0%, #0D0F0D 50%, var(--black) 100%);
+      radial-gradient(ellipse 40% 50% at 70% 50%, rgba(212, 168, 71, 0.05) 0%, transparent 60%);
+    /* Linear removed — body gradient shows through behind the hero */
   }
 
-  /* Scope tube vignette */
+  /* Scope tube vignette — softened so the body gradient still bleeds through at hero edges */
   .scope-vignette {
     position: absolute;
     inset: 0;
     z-index: 1;
     pointer-events: none;
-    background: radial-gradient(circle at 50% 50%, transparent 30%, rgba(0,0,0,0.3) 55%, rgba(0,0,0,0.85) 75%, rgba(0,0,0,0.97) 90%);
+    background: radial-gradient(circle at 50% 50%, transparent 40%, rgba(0,0,0,0.12) 65%, rgba(0,0,0,0.32) 85%, rgba(0,0,0,0.45) 100%);
   }
 
   /* Animated grain overlay */
@@ -77,7 +88,38 @@
     inset: 0;
     pointer-events: none;
     z-index: 2;
+    animation: reticleSettle 2.5s ease-out both;
   }
+
+  @keyframes reticleSettle {
+    0%   { opacity: 0; transform: scale(1.15); }
+    60%  { opacity: 0.85; transform: scale(1.02); }
+    100% { opacity: 1; transform: scale(1); }
+  }
+
+  /* Warm tonal background — same layered radial gradient pattern as the hero,
+     so new sections get the sage+gold depth instead of flat pure-black. */
+  .warm-bg {
+    background:
+      radial-gradient(ellipse 80% 60% at 50% 40%, rgba(92, 107, 82, 0.14) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 50% at 70% 50%, rgba(212, 168, 71, 0.07) 0%, transparent 60%);
+    /* Linear removed — body gradient now shows through */
+  }
+
+  /* SAI section logo reveal — the PNG includes its own reticle, so no overlay needed.
+     Just the fade-in-up on the logo composition when the section enters view. */
+  .sai-logo-wrap {
+    position: relative;
+    z-index: 2;
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 1.2s ease-out 0.2s, transform 1.2s ease-out 0.2s;
+  }
+  .sai-section.in-view .sai-logo-wrap {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .sai-section { position: relative; overflow: hidden; }
 
   .reticle-overlay svg {
     width: 100%;
@@ -166,7 +208,7 @@
     font-size: clamp(20px, 3vw, 32px);
     letter-spacing: 10px;
     text-transform: uppercase;
-    color: var(--moss);
+    color: var(--white);
     margin-bottom: 40px;
     animation: fadeInUp 1.2s ease-out 0.5s both;
   }
@@ -306,8 +348,9 @@
 
   /* Voice Demo */
   .voice-demo {
-    background: var(--dark);
-    border: 1px solid rgba(212, 168, 71, 0.1);
+    background: rgba(20, 20, 20, 0.55);
+    backdrop-filter: blur(2px);
+    border: 1px solid rgba(212, 168, 71, 0.15);
     border-radius: 2px;
     padding: 48px;
     max-width: 680px;
@@ -408,11 +451,12 @@
   }
 
   .feature-card {
-    background: var(--dark);
+    background: rgba(20, 20, 20, 0.50);
+    backdrop-filter: blur(2px);
     padding: 48px 36px;
     position: relative;
     transition: all 0.4s ease;
-    border: 1px solid rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.05);
     text-align: center;
     display: flex;
     flex-direction: column;
@@ -463,27 +507,11 @@
     pointer-events: none;
   }
 
-  .target-rings {
-    width: min(500px, 80vw);
-    height: min(500px, 80vw);
-    position: relative;
+  .target-reticle {
+    width: min(560px, 85vw);
+    height: min(560px, 85vw);
+    display: block;
   }
-
-  .target-ring {
-    position: absolute;
-    border-radius: 50%;
-    border: 1px solid;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-  }
-
-  .target-ring:nth-child(1) { width: 100%; height: 100%; border-color: rgba(212, 168, 71, 0.06); }
-  .target-ring:nth-child(2) { width: 80%; height: 80%; border-color: rgba(212, 168, 71, 0.08); }
-  .target-ring:nth-child(3) { width: 60%; height: 60%; border-color: rgba(212, 168, 71, 0.1); }
-  .target-ring:nth-child(4) { width: 40%; height: 40%; border-color: rgba(212, 168, 71, 0.13); }
-  .target-ring:nth-child(5) { width: 20%; height: 20%; border-color: rgba(212, 168, 71, 0.16); }
-  .target-ring:nth-child(6) { width: 6%; height: 6%; border-color: var(--amber); background: rgba(212, 168, 71, 0.08); }
 
   .target-content {
     position: relative;
@@ -555,7 +583,7 @@
     font-family: 'Bebas Neue', sans-serif;
     font-size: 32px;
     letter-spacing: 1px;
-    color: var(--white);
+    color: var(--amber);
     margin-bottom: 12px;
   }
 
@@ -845,8 +873,33 @@
   <div class="scope-vignette"></div>
 
   <!-- Christmas Tree Reticle -->
-  <div class="reticle-overlay">
+  <div class="reticle-overlay" style="display:none;">
     <svg viewBox="0 0 1000 600" preserveAspectRatio="xMidYMid slice">
+      <defs>
+        <filter id="dotGlow" x="-200%" y="-200%" width="500%" height="500%">
+          <feGaussianBlur stdDeviation="4" result="blur"></feGaussianBlur>
+          <feMerge>
+            <feMergeNode in="blur"></feMergeNode>
+            <feMergeNode in="SourceGraphic"></feMergeNode>
+          </feMerge>
+        </filter>
+        <radialGradient id="dotHalo" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="rgba(255,225,150,0.95)"></stop>
+          <stop offset="22%" stop-color="rgba(255,200,110,0.55)"></stop>
+          <stop offset="55%" stop-color="rgba(180,205,235,0.22)"></stop>
+          <stop offset="100%" stop-color="rgba(160,190,225,0)"></stop>
+        </radialGradient>
+        <linearGradient id="hLineLeft" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stop-color="rgba(212,168,71,0)"></stop>
+          <stop offset="55%" stop-color="rgba(212,168,71,0.12)"></stop>
+          <stop offset="100%" stop-color="rgba(212,168,71,0.55)"></stop>
+        </linearGradient>
+        <linearGradient id="hLineRight" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stop-color="rgba(212,168,71,0.55)"></stop>
+          <stop offset="45%" stop-color="rgba(212,168,71,0.12)"></stop>
+          <stop offset="100%" stop-color="rgba(212,168,71,0)"></stop>
+        </linearGradient>
+      </defs>
       <!-- Outer range circle -->
       <circle cx="500" cy="300" r="220" stroke="rgba(212,168,71,0.06)" fill="none" stroke-width="0.5"></circle>
       <circle cx="500" cy="300" r="160" stroke="rgba(212,168,71,0.08)" fill="none" stroke-width="0.5"></circle>
@@ -855,10 +908,10 @@
       <line x1="500" y1="0" x2="500" y2="220" stroke="rgba(212,168,71,0.35)" stroke-width="0.8"></line>
       <!-- Main crosshair lines - bottom (thicker, center of tree trunk) -->
       <line x1="500" y1="340" x2="500" y2="600" stroke="rgba(212,168,71,0.5)" stroke-width="1"></line>
-      <!-- Main crosshair lines - left -->
-      <line x1="0" y1="300" x2="430" y2="300" stroke="rgba(212,168,71,0.35)" stroke-width="0.8"></line>
-      <!-- Main crosshair lines - right -->
-      <line x1="570" y1="300" x2="1000" y2="300" stroke="rgba(212,168,71,0.35)" stroke-width="0.8"></line>
+      <!-- Main crosshair lines - left (shortened so the horizontal line doesn't stretch into open space beside the logo) -->
+      <line x1="0" y1="300" x2="430" y2="300" stroke="url(#hLineLeft)" stroke-width="0.8"></line>
+      <!-- Main crosshair lines - right (shortened, mirror of left) -->
+      <line x1="570" y1="300" x2="1000" y2="300" stroke="url(#hLineRight)" stroke-width="0.8"></line>
 
       <!-- Inner thick crosshair segments -->
       <line x1="500" y1="235" x2="500" y2="275" stroke="rgba(212,168,71,0.7)" stroke-width="1.2"></line>
@@ -866,10 +919,10 @@
       <line x1="440" y1="300" x2="475" y2="300" stroke="rgba(212,168,71,0.7)" stroke-width="1.2"></line>
       <line x1="525" y1="300" x2="560" y2="300" stroke="rgba(212,168,71,0.7)" stroke-width="1.2"></line>
 
-      <!-- Center dot -->
-      <circle cx="500" cy="300" r="2.5" fill="rgba(212,168,71,0.8)"></circle>
-      <!-- Center open circle -->
-      <circle cx="500" cy="300" r="8" stroke="rgba(212,168,71,0.5)" fill="none" stroke-width="0.8"></circle>
+      <!-- Glowing center dot — halo + bright core -->
+      <circle cx="500" cy="300" r="22" fill="url(#dotHalo)"></circle>
+      <circle cx="500" cy="300" r="6" fill="rgba(255,225,150,0.95)" filter="url(#dotGlow)"></circle>
+      <circle cx="500" cy="300" r="3" fill="rgba(255,250,235,1)"></circle>
 
       <!-- ======= HORIZONTAL WINDAGE MARKS ON CENTER LINE ======= -->
       <!-- Left side mil marks -->
@@ -968,15 +1021,15 @@
 
   <!-- Hero Content -->
   <div class="hero-content">
-    <div class="tagline-top">Call Your Distance</div>
-    <h1 class="logo-title">SPOTTER<span>CALL<sup style="font-size:0.35em;vertical-align:super;font-weight:500;margin-left:0.05em;letter-spacing:0">™</sup></span></h1>
-    <div class="subtitle">A Spotter In Your Ear</div>
+    <img src="SpotterCall-Logo-cropped.png?v=3" alt="SpotterCall — A Spotter In Your Ear" class="hero-logo"
+         style="max-width:min(1280px, 96vw); width:100%; height:auto; display:block; margin:0 auto 8px;
+                animation: fadeInUp 1.2s ease-out 0.3s both;
+                filter: drop-shadow(0 0 80px rgba(212, 168, 71, 0.18));">
     <p class="hero-description">
-      The first voice-activated ballistic spotter app. Call your distance. Hear the hold. Hands on the rifle. Eyes downrange. Always.
+      A voice activated Ballistic Spotter App. Call your distance, Hear your hold.
     </p>
     <div class="cta-group">
       <a href="#waitlist" class="cta-btn cta-primary">Join the Waitlist</a>
-      <a href="https://spottercall.com" class="cta-btn cta-secondary" target="_blank">Try the Beta</a>
     </div>
   </div>
 
@@ -988,37 +1041,71 @@
 <!-- ============ HOW IT WORKS ============ -->
 <section class="section">
   <div class="section-label">How It Works</div>
-  <h2 class="section-title">Call Your Distance. Hear Your Hold.</h2>
+  <h2 class="section-title">Call Your Distance. <span style="color: var(--amber);">Hear Your Hold.</span></h2>
   <p class="section-subtitle">
     Pair your earbuds. Load your profile. Call your distance. SpotterCall speaks the hold back to you — instant, hands-free, eyes downrange.
   </p>
 
   <div class="voice-demo">
+    <div style="font-family:'Barlow Condensed',sans-serif; font-weight:600; font-size:0.78rem; letter-spacing:0.22em; text-transform:uppercase; color:rgba(212,168,71,0.85); text-align:center; margin-bottom:1.6rem; padding-bottom:1rem; border-bottom:1px solid rgba(212,168,71,0.2);">
+      Lapua Long Range
+    </div>
     <div class="voice-line">
       <span class="voice-label shooter">You</span>
       <span class="voice-text">"250 yards"</span>
     </div>
     <div class="voice-line">
       <span class="voice-label app">SpotterCall™</span>
-      <span class="voice-text"><em>"Up 7.4"</em></span>
+      <span class="voice-text"><em>"Up 10.2"</em></span>
     </div>
     <div class="voice-line">
       <span class="voice-label shooter">You</span>
-      <span class="voice-text">"Center X"</span>
+      <span class="voice-text">"265 yards"</span>
     </div>
     <div class="voice-line">
       <span class="voice-label app">SpotterCall™</span>
-      <span class="voice-text"><em>"Good hit. Same hold."</em></span>
+      <span class="voice-text"><em>"Up 11.2"</em></span>
     </div>
     <div class="waveform"><div class="wave-bar" style="animation-delay: 0s; height: 15px"></div><div class="wave-bar" style="animation-delay: 0.08s; height: 12px"></div><div class="wave-bar" style="animation-delay: 0.16s; height: 6px"></div><div class="wave-bar" style="animation-delay: 0.24s; height: 9px"></div><div class="wave-bar" style="animation-delay: 0.32s; height: 12px"></div><div class="wave-bar" style="animation-delay: 0.4s; height: 10px"></div><div class="wave-bar" style="animation-delay: 0.48s; height: 5px"></div><div class="wave-bar" style="animation-delay: 0.56s; height: 14px"></div><div class="wave-bar" style="animation-delay: 0.64s; height: 7px"></div><div class="wave-bar" style="animation-delay: 0.72s; height: 10px"></div><div class="wave-bar" style="animation-delay: 0.8s; height: 14px"></div><div class="wave-bar" style="animation-delay: 0.88s; height: 13px"></div><div class="wave-bar" style="animation-delay: 0.96s; height: 15px"></div><div class="wave-bar" style="animation-delay: 1.04s; height: 15px"></div><div class="wave-bar" style="animation-delay: 1.12s; height: 16px"></div><div class="wave-bar" style="animation-delay: 1.2s; height: 14px"></div><div class="wave-bar" style="animation-delay: 1.28s; height: 15px"></div><div class="wave-bar" style="animation-delay: 1.36s; height: 13px"></div><div class="wave-bar" style="animation-delay: 1.44s; height: 9px"></div><div class="wave-bar" style="animation-delay: 1.52s; height: 15px"></div>
     </div>
   </div>
 </section>
 
+<!-- ============ KESTREL ATMOSPHERICS ============ -->
+<section class="section warm-bg" style="padding-top: 0;">
+  <div class="section-label">Live Atmospherics</div>
+  <h2 class="section-title">Live Atmospherics from Your <span style="color:var(--amber);">Kestrel</span></h2>
+  <p class="section-subtitle" style="font-style:italic;">
+    Pair once. Forget it's there.
+  </p>
+  <div style="max-width:720px; margin:2rem auto 0; padding:0 1.5rem;">
+    <p style="font-family:'Barlow',sans-serif; font-size:1rem; line-height:1.8; color:rgba(240,234,214,0.85); margin-bottom:1.2rem;">
+      SpotterCall reads live atmospherics from your <span style="color:var(--amber);font-weight:600;">Kestrel</span> Link device over Bluetooth — temperature, pressure, humidity, density altitude — and feeds them straight to the firing solution. The wind shifts at 600. The temperature drops twenty degrees by dusk. The hold updates. You don't move off the rifle.
+    </p>
+    <p style="font-family:'Barlow',sans-serif; font-size:1rem; line-height:1.8; color:rgba(240,234,214,0.85); margin-bottom:1.2rem;">
+      Compatible with any <span style="color:var(--amber);font-weight:600;">Kestrel</span> Link-enabled meter — the Drop D3, the 5700 Sportsman, the 5700 Elite with WEZ. Pair your meter once in settings; from then on it's silent. The integration runs in the background; you stay in the workflow.
+    </p>
+    <p style="font-family:'Barlow Condensed',sans-serif; font-size:0.92rem; letter-spacing:0.06em; color:rgba(212,168,71,0.75); text-align:center; margin-top:1.5rem; font-style:italic;">
+      No retyping conditions. No copy-paste from a separate screen. No taking your eyes off the target to confirm a number.
+    </p>
+    <p style="font-family:'Barlow',sans-serif; font-size:0.95rem; line-height:1.6; color:rgba(240,234,214,0.7); text-align:center; margin-top:2rem;">
+      Need a Kestrel — or upgrading to Link?
+      <a href="https://kestrelinstruments.com/link-connectivity/?utm_source=spottercall&amp;utm_medium=referral&amp;utm_campaign=kestrel-link"
+         target="_blank" rel="noopener"
+         data-track="kestrel-link-outbound"
+         style="display:inline-block; margin-left:0.6em; padding:0.45em 1.1em; font-family:'Barlow Condensed',sans-serif; font-weight:600; font-size:0.92rem; letter-spacing:0.12em; text-transform:uppercase; color:var(--amber); border:1px solid rgba(212,168,71,0.55); border-radius:4px; text-decoration:none; transition:all 0.2s ease;"
+         onmouseover="this.style.background='rgba(212,168,71,0.12)'; this.style.borderColor='rgba(212,168,71,0.85)';"
+         onmouseout="this.style.background='transparent'; this.style.borderColor='rgba(212,168,71,0.55)';">
+        Visit Kestrel &rarr;
+      </a>
+    </p>
+  </div>
+</section>
+
 <!-- ============ FEATURES ============ -->
 <section class="section" style="padding-top: 0;">
   <div class="section-label">Features</div>
-  <h2 class="section-title" style="text-align:center;">Your Gear. Your Data. Our Call.</h2>
+  <h2 class="section-title" style="text-align:center;">Your <span style="color: var(--amber);">Gear.</span> Your <span style="color: var(--amber);">Data.</span> Our <span style="color: var(--amber);">Call.</span></h2>
   <p class="section-subtitle" style="margin-left:auto; margin-right:auto; text-align:center;">
     Import profiles from any ballistic app. Or pick from our built-in library. SpotterCall calls it back to you.
   </p>
@@ -1029,13 +1116,13 @@
       "HEY SPOTTER"
     </div>
     <div style="font-family:'Barlow Condensed',sans-serif;font-size:0.72rem;letter-spacing:0.22em;color:#A8A49C;text-transform:uppercase;margin-bottom:1rem;">
-      Hands-Free Voice Command · Coming Soon
+      Hands-Free Voice Command
     </div>
-    <p style="font-family:'Barlow',sans-serif;font-size:0.95rem;color:#FFFFFF;line-height:1.7;max-width:560px;margin:0 auto 1.2rem;">
-      Say <strong style="color:#F0C040;">"Hey Spotter"</strong> and your phone listens. Call a distance — <em>"four hundred yards"</em> — and hear the hold instantly. Or switch profiles on the fly — <em>"Hey Spotter, we're gonna shoot the 243"</em> — and it confirms: <strong style="color:#F0C040;">"243 is loaded."</strong>
+    <p style="font-family:'Barlow',sans-serif;font-size:0.95rem;color:#FFFFFF;line-height:1.7;max-width:580px;margin:0 auto 1.2rem;">
+      Say <strong style="color:#F0C040;">"Hey Spotter"</strong> and your phone listens. With your <strong style="color:#F0C040;">.300 PRC 210gr</strong> profile loaded, call a distance — <em>"759 yards"</em> — and the hold comes back in your ear: <strong style="color:#F0C040;">"Up 4.4."</strong>
     </p>
     <p style="font-family:'Barlow',sans-serif;font-size:0.88rem;color:#A8A49C;line-height:1.6;max-width:520px;margin:0 auto 1rem;">
-      Like "Hey Siri" but built for the range. Your hands stay on the rifle. Your eyes stay downrange. SpotterCall does the rest.
+      Wake-word always on. Hands on the rifle. Eyes downrange.
     </p>
     <div style="display:flex;gap:1.2rem;justify-content:center;flex-wrap:wrap;margin-top:1.2rem;">
       <div style="display:flex;align-items:center;gap:0.5rem;">
@@ -1060,7 +1147,7 @@
         <circle cx="24" cy="24" r="12"></circle>
       </svg>
       <h3 class="feature-title">Voice Hold Calls</h3>
-      <p class="feature-desc">Call a distance in any increment. Hear the precise hold in MRAD or MOA instantly through your earbuds. No screen. No fumbling.</p>
+      <p class="feature-desc">Call a distance in any increment. Hear the precise hold in MRAD, MOA, or inches over target — instantly through your earbuds. No screen. No fumbling.</p>
     </div>
     <div class="feature-card">
       <svg class="feature-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5">
@@ -1068,7 +1155,7 @@
         <rect x="6" y="6" width="36" height="36" rx="4"></rect>
       </svg>
       <h3 class="feature-title">Import Any Profile</h3>
-      <p class="feature-desc">Bring your trued data from GeoBallistics, Applied Ballistics, Trasol, or any CSV. Your profiles. Your numbers. Our voice.</p>
+      <p class="feature-desc">Upload your existing profile. Bring your trued data in any format. Your profiles. Your numbers. Our voice.</p>
     </div>
     <div class="feature-card">
       <svg class="feature-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5">
@@ -1077,7 +1164,7 @@
         <path d="M18 12h12M18 18h8"></path>
       </svg>
       <h3 class="feature-title">Reference Library</h3>
-      <p class="feature-desc">Don't have custom data? Pick your caliber, bullet, and manufacturer from our built-in library. Instant holds for factory ammo.</p>
+      <p class="feature-desc">Don't have custom ballistics? Use <strong style="color: var(--amber);">MAST</strong> — our built-in library. Pick a load from the catalog, or read the numbers right off your ammo box. Instant holds.</p>
     </div>
     <div class="feature-card">
       <svg class="feature-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5">
@@ -1087,7 +1174,7 @@
         <circle cx="20" cy="20" r="1.5" fill="currentColor"></circle>
       </svg>
       <h3 class="feature-title">Shot Correction</h3>
-      <p class="feature-desc">Tell SpotterCall where you hit. It calculates the correction and calls the adjusted hold. Like having a spotter on the glass.</p>
+      <p class="feature-desc">Call where you hit. SpotterCall trues your MV from the observed impact — every shot after is dialed to your real load, not the manufacturer's number.</p>
     </div>
     <div class="feature-card">
       <svg class="feature-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5">
@@ -1096,7 +1183,7 @@
         <path d="M36 12l4-4M12 12L8 8"></path>
       </svg>
       <h3 class="feature-title">Live Weather & Atmosphere</h3>
-      <p class="feature-desc">GPS-based atmospheric data — temperature, pressure, humidity, and altitude — calculated in real time so your holds stay accurate as conditions shift.</p>
+      <p class="feature-desc">Atmospherics from your Kestrel or GPS-based fallback — temperature, pressure, humidity, and altitude calculated in real time so your holds stay accurate as conditions shift.</p>
     </div>
     <div class="feature-card">
       <svg class="feature-icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5">
@@ -1113,14 +1200,66 @@
 <!-- ============ TARGET / STATS ============ -->
 <section class="target-section">
   <div class="target-bg">
-    <div class="target-rings">
-      <div class="target-ring"></div>
-      <div class="target-ring"></div>
-      <div class="target-ring"></div>
-      <div class="target-ring"></div>
-      <div class="target-ring"></div>
-      <div class="target-ring"></div>
-    </div>
+    <svg class="target-reticle" viewBox="0 0 600 600" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+      <defs>
+        <filter id="statDotGlow" x="-200%" y="-200%" width="500%" height="500%">
+          <feGaussianBlur stdDeviation="3" result="blur"></feGaussianBlur>
+          <feMerge><feMergeNode in="blur"></feMergeNode><feMergeNode in="SourceGraphic"></feMergeNode></feMerge>
+        </filter>
+        <radialGradient id="statDotHalo" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="rgba(255,225,150,0.7)"></stop>
+          <stop offset="22%" stop-color="rgba(255,200,110,0.4)"></stop>
+          <stop offset="55%" stop-color="rgba(180,205,235,0.15)"></stop>
+          <stop offset="100%" stop-color="rgba(160,190,225,0)"></stop>
+        </radialGradient>
+        <linearGradient id="statHLineLeft" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stop-color="rgba(212,168,71,0)"></stop>
+          <stop offset="55%" stop-color="rgba(212,168,71,0.08)"></stop>
+          <stop offset="100%" stop-color="rgba(212,168,71,0.35)"></stop>
+        </linearGradient>
+        <linearGradient id="statHLineRight" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stop-color="rgba(212,168,71,0.35)"></stop>
+          <stop offset="45%" stop-color="rgba(212,168,71,0.08)"></stop>
+          <stop offset="100%" stop-color="rgba(212,168,71,0)"></stop>
+        </linearGradient>
+      </defs>
+      <!-- Outer range circles -->
+      <circle cx="300" cy="300" r="220" stroke="rgba(212,168,71,0.05)" fill="none" stroke-width="0.5"></circle>
+      <circle cx="300" cy="300" r="160" stroke="rgba(212,168,71,0.07)" fill="none" stroke-width="0.5"></circle>
+      <!-- Vertical crosshair top -->
+      <line x1="300" y1="0" x2="300" y2="220" stroke="rgba(212,168,71,0.22)" stroke-width="0.6"></line>
+      <!-- Vertical crosshair bottom (extends into Christmas tree) -->
+      <line x1="300" y1="340" x2="300" y2="600" stroke="rgba(212,168,71,0.32)" stroke-width="0.8"></line>
+      <!-- Horizontal crosshair with fade -->
+      <line x1="0" y1="300" x2="230" y2="300" stroke="url(#statHLineLeft)" stroke-width="0.6"></line>
+      <line x1="370" y1="300" x2="600" y2="300" stroke="url(#statHLineRight)" stroke-width="0.6"></line>
+      <!-- Inner thick crosshair segments -->
+      <line x1="300" y1="240" x2="300" y2="275" stroke="rgba(212,168,71,0.45)" stroke-width="1"></line>
+      <line x1="300" y1="325" x2="300" y2="340" stroke="rgba(212,168,71,0.45)" stroke-width="1"></line>
+      <line x1="245" y1="300" x2="275" y2="300" stroke="rgba(212,168,71,0.45)" stroke-width="1"></line>
+      <line x1="325" y1="300" x2="355" y2="300" stroke="rgba(212,168,71,0.45)" stroke-width="1"></line>
+      <!-- Glowing center dot -->
+      <circle cx="300" cy="300" r="20" fill="url(#statDotHalo)"></circle>
+      <circle cx="300" cy="300" r="5" fill="rgba(255,225,150,0.7)" filter="url(#statDotGlow)"></circle>
+      <circle cx="300" cy="300" r="2.5" fill="rgba(255,250,235,0.95)"></circle>
+      <!-- Christmas tree mil dots below center (SC-reticle style, more visible) -->
+      <line x1="282" y1="370" x2="318" y2="370" stroke="rgba(212,168,71,0.55)" stroke-width="0.8"></line>
+      <circle cx="282" cy="370" r="1.6" fill="rgba(212,168,71,0.50)"></circle>
+      <circle cx="318" cy="370" r="1.6" fill="rgba(212,168,71,0.50)"></circle>
+      <line x1="270" y1="410" x2="330" y2="410" stroke="rgba(212,168,71,0.50)" stroke-width="0.8"></line>
+      <circle cx="270" cy="410" r="1.6" fill="rgba(212,168,71,0.45)"></circle>
+      <circle cx="300" cy="410" r="1.6" fill="rgba(212,168,71,0.45)"></circle>
+      <circle cx="330" cy="410" r="1.6" fill="rgba(212,168,71,0.45)"></circle>
+      <line x1="258" y1="450" x2="342" y2="450" stroke="rgba(212,168,71,0.45)" stroke-width="0.8"></line>
+      <circle cx="258" cy="450" r="1.6" fill="rgba(212,168,71,0.40)"></circle>
+      <circle cx="280" cy="450" r="1.3" fill="rgba(212,168,71,0.36)"></circle>
+      <circle cx="300" cy="450" r="1.6" fill="rgba(212,168,71,0.40)"></circle>
+      <circle cx="320" cy="450" r="1.3" fill="rgba(212,168,71,0.36)"></circle>
+      <circle cx="342" cy="450" r="1.6" fill="rgba(212,168,71,0.40)"></circle>
+      <!-- Downward pointer arrow at bottom (SC reticle signature) -->
+      <line x1="300" y1="465" x2="300" y2="530" stroke="rgba(212,168,71,0.45)" stroke-width="0.7"></line>
+      <polyline points="293,520 300,535 307,520" fill="none" stroke="rgba(212,168,71,0.6)" stroke-width="0.8" stroke-linejoin="round"></polyline>
+    </svg>
   </div>
   <div class="target-content">
     <div class="section-label">By The Numbers</div>
@@ -1128,20 +1267,20 @@
     <div class="stat-grid">
       <div>
         <div class="stat-number">0.1</div>
-        <div class="stat-label">MRAD Interpolation</div>
+        <div class="stat-label">MRAD Precision</div>
       </div>
       <div>
-        <div class="stat-number">&lt;1s</div>
+        <div class="stat-number">Seconds</div>
         <div class="stat-label">Voice Response Time</div>
       </div>
       <div>
-        <div class="stat-number">1,000+</div>
-        <div class="stat-label">Yards · Any Caliber</div>
+        <div class="stat-number">1,200</div>
+        <div class="stat-label">Yards · Centerfire</div>
       </div>
     </div>
     <!-- Caliber callout -->
     <p style="margin-top:40px; font-family:'Barlow Condensed',sans-serif; font-size:12px; letter-spacing:3px; color:rgba(212,168,71,0.45); text-transform:uppercase;">
-      .22 LR &nbsp;·&nbsp; .308 Win &nbsp;·&nbsp; 300 PRC &nbsp;·&nbsp; 6.5 CM &nbsp;·&nbsp; .270 Win &nbsp;·&nbsp; 7mm Rem Mag &nbsp;·&nbsp; 5.56 &nbsp;·&nbsp; And More
+      .22 LR &nbsp;·&nbsp; .308 Win &nbsp;·&nbsp; 300 PRC &nbsp;·&nbsp; 6.5 Creedmoor &nbsp;·&nbsp; .270 Win &nbsp;·&nbsp; 7mm PRC &nbsp;·&nbsp; 5.56 &nbsp;·&nbsp; .224 Valkyrie &nbsp;·&nbsp; 6mm &nbsp;·&nbsp; And More
     </p>
   </div>
 </section>
@@ -1149,11 +1288,11 @@
 <!-- ============ USE CASES ============ -->
 <section class="section">
   <div class="section-label">Who It's For</div>
-  <h2 class="section-title">Every Shooter. Every Distance.</h2>
+  <h2 class="section-title">Every Shooter. <span style="color: var(--amber);">Every Distance.</span></h2>
   <div class="use-cases">
     <div class="use-case">
       <h3 class="use-case-title">Competitors</h3>
-      <p class="use-case-desc">PRS, NRL22, F-Class, FTR, and Palma shooters. Import your trued profiles and get voice holds at the line. Hands free. Eyes on the X.</p>
+      <p class="use-case-desc">PRS, NRL22, F-Class, FTR, and Palma shooters. Import your trued profiles and get voice holds at the line. Hands free. Eyes on the X.<span style="display:block; margin-top:0.7rem; font-style:italic; font-size:0.82em; color:rgba(240,234,214,0.5);">If your match rules allow electronics.</span></p>
     </div>
     <div class="use-case">
       <h3 class="use-case-title">Hunters</h3>
@@ -1166,6 +1305,44 @@
   </div>
 </section>
 
+<!-- ============ SPOTTER AI ============ -->
+<section class="section sai-section warm-bg" style="padding-top:5rem; padding-bottom:5rem;">
+
+  <div class="sai-logo-wrap" style="text-align:center; margin-bottom:2.5rem;">
+    <img src="SpotterAI-Logo.png" alt="Spotter AI — A Spotter In Your Ear"
+         style="max-width:min(1280px, 96vw); width:100%; height:auto; display:block; margin:0 auto;
+                filter: drop-shadow(0 0 80px rgba(212, 168, 71, 0.18));">
+  </div>
+  <div style="max-width:760px; margin:0 auto; padding:0 1.5rem;">
+    <p class="section-subtitle" style="text-align:center; margin-bottom:2.8rem; max-width:680px; margin-left:auto; margin-right:auto;">
+      Spotter AI is the conversational spotter — voice-to-voice, brain-on, reading the field with you.
+    </p>
+
+    <p style="font-family:'Barlow',sans-serif; font-size:1rem; line-height:1.8; color:rgba(240,234,214,0.85); margin-bottom:1.6rem;">
+      Where SpotterCall calls back a hold, Spotter AI talks back. Ask it the wind. Ask it the drift. Ask it whether to wait out the gust. Ask it to remember your last shot and adjust for the next one. The conversation is the interface; the math runs underneath.
+    </p>
+
+    <p style="font-family:'Barlow',sans-serif; font-size:1rem; line-height:1.8; color:rgba(240,234,214,0.85); margin-bottom:1.6rem;">
+      <strong style="color:var(--amber); font-weight:600;">Reads the field through your sensors.</strong> Pair your Kestrel 5700 for live atmospherics — temp, pressure, humidity, density altitude — over Bluetooth. Pair a compatible wind meter and Spotter AI hears the downrange wind in real time. Conditions update; the hold updates; the call updates. You stay in the workflow.
+    </p>
+
+    <p style="font-family:'Barlow',sans-serif; font-size:1rem; line-height:1.8; color:rgba(240,234,214,0.85); margin-bottom:1.6rem;">
+      <strong style="color:var(--amber); font-weight:600;">Built for the way hunters actually shoot.</strong> Most hunters don't dial their scope; they hold over the target with a capped scope and a known reticle. Spotter AI's Hold Mode gives the call in inches-over-target — <em>"hold seven inches high, three left"</em> — not just mils. A pie-plate hold table tells you the truth about where the bullet lives at every distance for your load. <em>"Your pie plate is 320 yards"</em> is the confidence language a hunter actually needs.
+    </p>
+
+    <p style="font-family:'Barlow',sans-serif; font-size:1rem; line-height:1.8; color:rgba(240,234,214,0.85); margin-bottom:1.6rem;">
+      <strong style="color:var(--amber); font-weight:600;">Sits next to what you already trust.</strong> Spotter AI isn't asking you to replace your existing ballistic calculator or your range-day workflow. It rides alongside, voice-first, reading the same conditions you'd read manually — faster, hands-free. The shooter who trusts their existing ballistic calculator keeps trusting it. Spotter AI is the voice layer on top.
+    </p>
+
+    <p style="font-family:'Barlow Condensed',sans-serif; font-size:0.95rem; letter-spacing:0.12em; color:rgba(212,168,71,0.9); text-align:center; margin-top:2.8rem; text-transform:uppercase; font-weight:500;">
+      Currently in TestFlight · Hunters · PRS · F-Class
+    </p>
+    <p style="font-family:'Barlow',sans-serif; font-size:0.95rem; line-height:1.6; color:rgba(240,234,214,0.6); text-align:center; margin-top:0.6rem;">
+      We'd love your feedback.
+    </p>
+  </div>
+</section>
+
 <!-- ============ PHONE MOCKUP ============ -->
 <section class="phone-section">
   <!-- Real app screenshot in a phone frame -->
@@ -1175,7 +1352,7 @@
       <!-- Dynamic island -->
       <div style="width:110px; height:30px; background:#000; border-radius:0 0 18px 18px; margin:0 auto 0; position:relative; z-index:2;"></div>
       <!-- Screenshot -->
-      <img src="app-screenshot.png" alt="SpotterCall app — Match .22, 200yd, U6.8 MRAD hold"
+      <img src="phone-mockup-kestrel.png" alt="SpotterCall app — Kestrel connected, live atmospherics, 700yd hold U 5.5 MRAD on .308 185gr"
         style="width:100%; display:block; border-radius:6px; margin-top:-2px;">
     </div>
     <!-- Ambient glow under phone -->
@@ -1314,8 +1491,7 @@
     SpotterCall is in beta now. Join the waitlist for the full iOS and Android launch.
   </p>
   <div class="cta-group">
-    <a href="https://spottercall.com" class="cta-btn cta-primary" target="_blank">Try the Beta</a>
-    <a href="https://www.instagram.com/spottercall" class="cta-btn cta-secondary" target="_blank">Follow @spottercall</a>
+    <a href="https://www.instagram.com/spottercall" class="cta-btn cta-primary" target="_blank">Follow @spottercall</a>
   </div>
 </section>
 
@@ -1333,5 +1509,24 @@
 </footer>
 
 
+
+<!-- Scroll-triggered reveal for SAI section reticle + logo -->
+<script>
+  (function() {
+    var sai = document.querySelector('.sai-section');
+    if (!sai) return;
+    // If IntersectionObserver isn't supported, just reveal immediately.
+    if (!('IntersectionObserver' in window)) { sai.classList.add('in-view'); return; }
+    var io = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          sai.classList.add('in-view');
+          io.unobserve(sai);
+        }
+      });
+    }, { threshold: 0.18 });
+    io.observe(sai);
+  })();
+</script>
 
 </body></html>
