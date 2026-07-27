@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SpotterCall — User Manual</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@500;600&family=Barlow:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root { --gold:#C9962A; --gold2:#d4a847; --black:#0D0D0D; --panel:#161513; --line:#2a2620; --text:#e8e4dc; --dim:#a09884; }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { background:var(--black); color:var(--text); font-family:'Barlow',-apple-system,sans-serif; line-height:1.55; }
+  .wrap { max-width:900px; margin:0 auto; padding:28px 20px 80px; }
+  header { text-align:center; padding:36px 0 8px; }
+  .logo { font-family:'Bebas Neue',sans-serif; font-size:56px; letter-spacing:4px; color:#fff; }
+  .logo span { color:var(--gold); }
+  .subtitle { font-family:'Barlow Condensed',sans-serif; font-size:22px; letter-spacing:6px; color:var(--dim); text-transform:uppercase; margin-top:2px; }
+  .tagline { color:var(--gold2); font-family:'Barlow Condensed',sans-serif; font-size:19px; letter-spacing:2px; margin-top:14px; }
+  h2 { font-family:'Bebas Neue',sans-serif; font-size:34px; letter-spacing:2px; color:var(--gold); margin:54px 0 12px; border-bottom:1px solid var(--line); padding-bottom:8px; }
+  h3 { font-family:'Barlow Condensed',sans-serif; font-size:22px; letter-spacing:1.5px; color:#fff; text-transform:uppercase; margin:26px 0 8px; }
+  p { margin:10px 0; }
+  .figrow { display:flex; gap:24px; align-items:flex-start; flex-wrap:wrap; margin:18px 0; }
+  .figrow img { width:290px; border-radius:18px; border:1px solid var(--line); }
+  .figrow .cap { flex:1; min-width:280px; }
+  figcaption { color:var(--dim); font-size:14px; margin-top:6px; text-align:center; width:290px; }
+  .legend { margin:14px 0; border:1px solid var(--line); border-radius:10px; overflow:hidden; }
+  .legend .item { display:flex; gap:14px; padding:13px 16px; border-bottom:1px solid var(--line); }
+  .legend .item:last-child { border-bottom:none; }
+  .legend .item:nth-child(odd) { background:var(--panel); }
+  .num { flex:0 0 34px; height:34px; border-radius:50%; background:var(--gold); color:var(--black); font-weight:700; display:flex; align-items:center; justify-content:center; font-size:16px; }
+  .item b.name { color:var(--gold2); display:block; font-family:'Barlow Condensed',sans-serif; font-size:18px; letter-spacing:1px; text-transform:uppercase; }
+  .callout { border-left:4px solid var(--gold); background:var(--panel); padding:14px 18px; border-radius:0 10px 10px 0; margin:18px 0; }
+  .callout.red { border-left-color:#c0392b; }
+  .callout b { color:var(--gold2); }
+  .callout.red b { color:#e74c3c; }
+  .say { font-family:'SF Mono',Menlo,monospace; background:#1e1b16; color:var(--gold2); padding:2px 8px; border-radius:6px; font-size:0.93em; white-space:nowrap; }
+  .steps { counter-reset:step; margin:14px 0; }
+  .steps .st { display:flex; gap:14px; margin:12px 0; }
+  .steps .st::before { counter-increment:step; content:counter(step); flex:0 0 30px; height:30px; border-radius:50%; border:2px solid var(--gold); color:var(--gold); display:flex; align-items:center; justify-content:center; font-weight:700; }
+  table.plain { width:100%; border-collapse:collapse; margin:14px 0; }
+  table.plain th { text-align:left; color:var(--dim); font-family:'Barlow Condensed',sans-serif; letter-spacing:1px; text-transform:uppercase; font-size:15px; padding:8px 10px; border-bottom:1px solid var(--line); }
+  table.plain td { padding:9px 10px; border-bottom:1px solid var(--line); vertical-align:top; }
+  .pill { display:inline-block; border:1px solid var(--gold); color:var(--gold); border-radius:20px; padding:1px 12px; font-size:13px; letter-spacing:1px; font-family:'Barlow Condensed',sans-serif; text-transform:uppercase; }
+  .toc { background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:18px 22px; margin-top:26px; columns:2; }
+  .toc a { color:var(--text); text-decoration:none; display:block; padding:4px 0; font-size:15px; }
+  .toc a:hover { color:var(--gold2); }
+  .draftbar { background:#3a2c10; color:#eecf8a; text-align:center; padding:8px 12px; font-size:14px; letter-spacing:1px; border-radius:8px; margin-top:20px; }
+  @media print { .draftbar { display:none; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <div class="logo">SPOTTER<span>CALL</span></div>
+  <div class="subtitle">User Manual</div>
+  <div class="tagline">A SPOTTER IN YOUR EAR &nbsp;·&nbsp; SPEAK THE DISTANCE</div>
+  <div class="draftbar">DRAFT v1.2 · 2026-07-19 · new this version: the number rule (bare number = distance), My Gear Kestrel picker, one-truth wind display, SET BEARING nudge, custom Range cards + per-distance labels (v1.0, device-verified) · BETA refs removed for public · 22 fresh screenshots — every screen re-shot on today's build (anatomy re-annotated) · all launch-required shots IN · remaining: TRUE MODE re-shoot + Watch (post-launch OK) · 7/20: audit items closed — blue-dial mirror + can't-drag row, DRIFT column text, SCANNING… state, ease-of-use §1</div>
+</header>
+
+<nav class="toc">
+  <a href="#what">1 · What SpotterCall is</a>
+  <a href="#anatomy">2 · The main screen — every control</a>
+  <a href="#first">3 · Your first call in 60 seconds</a>
+  <a href="#read">4 · How to read a call — and the number rule</a>
+  <a href="#hands">5 · Hands-free — "Hey Spotter"</a>
+  <a href="#tapdist">6 · TAP DISTANCE</a>
+  <a href="#dope">7 · Your DOPE card</a>
+  <a href="#true">8 · Truing — dial it in to YOUR rifle</a>
+  <a href="#profiles">9 · Rifles &amp; ADD YOUR RIFLE</a>
+  <a href="#kestrel">10 · Live weather &amp; wind (Kestrel)</a>
+  <a href="#settings">11 · Voice Settings</a>
+  <a href="#watch">12 · On your wrist</a>
+  <a href="#trouble">13 · If something's off</a>
+</nav>
+
+<h2 id="what">1 · What SpotterCall Is</h2>
+<p>SpotterCall is a spotter in your ear. Call out your distance — out loud or with a tap — and it speaks your firing solution back: distance, elevation, and wind, computed on your phone for the rifle you've selected. Hands on the rifle, eyes downrange, no fumbling with a phone.</p>
+<p>Everything in this manual is the supporting cast for that one loop: <b>you speak the distance, it speaks your hold.</b></p>
+<p>And everything here was built to one standard: <b>ease of use.</b> SpotterCall lives on the phone already in your pocket — so your holds, your wind, and your air live on a bright, full-color, living screen, not a two-inch gray readout. Range cards carry your own names for your own country — DIAMOND, BIG OAK, FOOD PLOT EDGE — in color, at a glance. The wind isn't a number to decode; it's a dial you can watch move. In the stand, that matters: set up once, prop the phone, and watch the wind work while you wait. You'd be looking at the screen anyway — now it's telling you something.</p>
+
+<h2 id="anatomy">2 · The Main Screen — Every Control</h2>
+<div class="figrow">
+  <div>
+    <img src="images/01-main-anatomy-v12.png" alt="Annotated main screen">
+    <figcaption>The main screen — current build, ready for the call.</figcaption>
+  </div>
+  <div class="cap">
+    <p>This is the whole app on one screen. The numbers below match the gold badges on the screenshot. For each control: <b>what it is, when it's lit, and how you use it.</b></p>
+    <div class="callout"><b>The one rule that matters:</b> the rifle at the top and the distance you call are the only two things SpotterCall can't figure out for itself. Get those two right and every number on this screen is working for you.</div>
+  </div>
+</div>
+
+<div class="legend">
+  <div class="item"><div class="num">1</div><div><b class="name">SpotterCall · Range</b>
+    The app you're in. RANGE is the mode — live calls, live conditions, your rifles.</div></div>
+  <div class="item"><div class="num">2</div><div><b class="name">KESTREL button</b>
+    Connects your Kestrel 5700-family weather meter over Bluetooth. <b>Dim outline = not connected. Gold dot = connected and streaming live conditions</b> into the ATMO row (10) and every call. Third state: <b>SCANNING…</b> — the app is looking for <i>your</i> remembered unit (auto-reconnect). It gives up after a few tries and settles back to dim; tap to retry. First time, you pick <i>your</i> unit from the My Gear list and the app remembers it by name from then on. Tap to connect, tap again to disconnect. You don't need one — without it the app pulls local weather automatically. Full steps in <a href="#kestrel" style="color:var(--gold2)">section 10</a>.</div></div>
+  <div class="item"><div class="num">3</div><div><b class="name">Gear — Voice Settings</b>
+    Opens the Voice Settings sheet: the Commander voice, HANDS-FREE MODE (the "Hey Spotter" wake word), voice preview, and CSV data export. Details in <a href="#settings" style="color:var(--gold2)">section 11</a>.</div></div>
+  <div class="item"><div class="num">4</div><div><b class="name">The rifle bar</b>
+    The profile every call is computed for — cartridge, bullet weight, ballistic coefficient (here ".308 185 · 185GR · G7 0.284"). Tap it to open the rifle list: profiles are grouped by shooter; your own builds live under CUSTOM at the top; ADD YOUR RIFLE is at the bottom. By voice, say <span class="say">"switch to 185"</span> — the word "switch" is required (see <a href="#read" style="color:var(--gold2)">the number rule</a>). <b>If the rifle shown isn't the one in your hands, fix it before you shoot.</b></div></div>
+  <div class="item"><div class="num">5</div><div><b class="name">MV stepper (− FPS +)</b>
+    Your muzzle velocity. Tap − / + to true it to your real impacts: hitting a touch high everywhere, come down a few fps. A green +N or red −N appears when you've moved off the profile's baseline, and trued calls get tagged ADJ. This is the quick truing tool — the full one is TRUE MODE in the DOPE card (<a href="#true" style="color:var(--gold2)">section 8</a>).</div></div>
+  <div class="item"><div class="num">6</div><div><b class="name">MRAD / MOA toggle</b>
+    Your hold units, app-wide. Dial in mils? MRAD. Scope turrets in MOA? MOA. Every call, the DOPE card, and the wind hold follow this switch.</div></div>
+  <div class="item"><div class="num">7</div><div><b class="name">Wind dial</b>
+    A compass with <b>your target at the top (TGT)</b>. The dial shows where the wind is coming FROM, relative to your shot — straight up = headwind, from the right side = wind off your right shoulder. Spin it to set direction manually, or let a connected sensor drive it. <b>When a sensor is streaming, the dial turns blue and becomes a read-only mirror</b> — it shows the measured wind and can't be dragged; that's live truth, not a stuck control. To go back to manual, release the sensor in My Gear (or tap KESTREL off) and the dial returns to gold and your hands. If your direction of fire isn't set yet, a <b>SET BEARING</b> nudge appears here — that's your cue (<a href="#kestrel" style="color:var(--gold2)">section 10</a>).</div></div>
+  <div class="item"><div class="num">8</div><div><b class="name">WIND &amp; HOLD readout</b>
+    The wind the solution is using, in plain words: "TAIL 11 MPH" — an 11 mph tailwind. Under it, HOLD is what that wind does to your shot at the last distance you called: "L 0.2 MRAD" — hold two-tenths left. When the wind is switched OFF (9), HOLD shows a dash. <b>Every wind number on every screen comes from the same resolved wind</b> — the dial, these pills, the HOLD, and the spoken call always agree.</div></div>
+  <div class="item"><div class="num">9</div><div><b class="name">Wind + / − and ON/OFF</b>
+    The + / − buttons nudge wind speed by 1 mph. The ON/OFF button is the master switch: <b>green ON = wind is in your solution. OFF = elevation and spin drift only, no wind hold.</b> If your calls suddenly have no wind number, look here first.</div></div>
+  <div class="item"><div class="num">10</div><div><b class="name">ATMO row</b>
+    The air your solution is flying through: temperature, station pressure, humidity, and the air-density factor. Fed by local weather automatically, or by a connected Kestrel (2) for right-here-right-now truth. The circular arrow refreshes; the green ON/OFF toggles atmospheric correction; the chevron expands the detail.</div></div>
+  <div class="item"><div class="num">11</div><div><b class="name">The solution readout</b>
+    The heart of the screen. Before your first call it reads CALL YOUR DISTANCE with dashes. After a call: your rifle and load across the top, the distance big (700 YD), elevation in white-and-gold (U 5.5 MRAD = up 5.5), and — when wind is ON — your wind hold under the line (L 0.2 = hold 0.2 left).</div></div>
+  <div class="item"><div class="num">12</div><div><b class="name">The mic button</b>
+    Tap it and say your distance — "seven hundred yards." The ring pulses while it listens. You'll hear the call in your earbud and see it land on the readout at the same time.</div></div>
+  <div class="item"><div class="num">13</div><div><b class="name">HEARD and STATUS lines</b>
+    The app's ears, in writing. HEARD echoes what it understood ("HEARD: 600 yards") — your on-screen proof it got your number. STATUS walks through what it's doing: TAP TO CALL DISTANCE → LISTENING… → PROCESSING…, or SAY "HEY SPOTTER"… when hands-free is armed.</div></div>
+  <div class="item"><div class="num">14</div><div><b class="name">Range log</b>
+    Every call from this session stacks up here — YOU 700 yd · SC U 5.5 MRAD · L 0.2 — so you can glance back at what you've already been given without calling it again.</div></div>
+  <div class="item"><div class="num">15</div><div><b class="name">CARD</b>
+    Opens your DOPE card — the full drop table for the selected rifle, live for today's conditions. <a href="#dope" style="color:var(--gold2)">Section 7</a>.</div></div>
+  <div class="item"><div class="num">16</div><div><b class="name">TAP DISTANCE</b>
+    A number pad for when talking isn't the move — loud firing line, quiet bench. Type the yards, hit CALL, same spoken solution. <a href="#tapdist" style="color:var(--gold2)">Section 6</a>.</div></div>
+</div>
+
+<h2 id="first">3 · Your First Call in 60 Seconds</h2>
+<div class="figrow">
+  <div>
+    <img src="images/24-main-idle-current.png" alt="Main screen ready for a call">
+    <figcaption>Before: CALL YOUR DISTANCE.</figcaption>
+  </div>
+  <div>
+    <img src="images/26-call-265-adj.png" alt="265 yard call delivered">
+    <figcaption>After: 265 yards — up 9.9, left 0.2. (ADJ: velocity trued +20.)</figcaption>
+  </div>
+</div>
+<div class="steps">
+  <div class="st"><div>Tap the <b>rifle bar</b> and pick your rifle. (Don't see yours? Build it in 30 seconds — <a href="#profiles" style="color:var(--gold2)">section 9</a>.)</div></div>
+  <div class="st"><div>Earbud in. Tap the <b>gold mic button</b>.</div></div>
+  <div class="st"><div>Say your distance: <span class="say">"three hundred yards"</span></div></div>
+  <div class="st"><div>Listen: <i>"Three hundred yards. Up one-point-two. Left point-one."</i> The same numbers land on the readout.</div></div>
+  <div class="st"><div>Dial or hold what it said. Fire when ready.</div></div>
+</div>
+
+<h2 id="read">4 · How to Read a Call — and the Number Rule</h2>
+<div class="figrow">
+  <div>
+    <img src="images/16-moa-mode-call.png" alt="A call being processed — HEARD line confirming">
+    <figcaption>HEARD: 265 yards → PROCESSING… — the app confirms your number before it answers.</figcaption>
+  </div>
+  <div class="cap">
+    <p><i>"Six hundred yards. Up 4.2. Left 0.1."</i></p>
+    <p><b>Distance comes first, every time.</b> That's not filler — it's your safety check. Your ears confirm the app heard the number you actually called before you touch the turret.</p>
+    <p><b>Up 4.2</b> — dial or hold 4.2 (MRAD or MOA, whichever your toggle says) of elevation.</p>
+    <p><b>Left 0.1</b> — hold one-tenth into the wind, to the left.</p>
+    <div class="callout red"><b>THE RULE:</b> if the distance it says back is not the distance you called — <b>don't shoot the hold.</b> Call it again. A right answer to the wrong question is a miss you didn't earn.</div>
+  </div>
+</div>
+
+<h3>The number rule — a bare number is always a distance</h3>
+<p>Say a number by itself and SpotterCall treats it as a <b>distance. Every time.</b> <span class="say">"185"</span> is a 185-yard call. <span class="say">"308"</span> is a 308-yard call. The app never guesses that a number might mean a rifle — one word, one meaning.</p>
+<p>Call outside the selected profile's table and it tells you straight, distance first: <i>"2000. Beyond profile's table."</i> — or — <i>"25. Below profile's table."</i> No invented hold, ever. An honest "can't" beats a confident wrong number.</p>
+<div class="figrow">
+  <div>
+    <img src="images/18-bare-number-off-table.png" alt="Bare number call refused beyond the profile table">
+    <figcaption>"2000. Beyond profile's table." — distance echoed, no invented hold.</figcaption>
+  </div>
+</div>
+<div class="callout red"><b>DON'T — old habit, retired:</b> on earlier builds, saying a bare caliber number like "185" could <i>switch rifles</i>. <b>That no longer works.</b> A bare "185" is now a 185-yard distance call. To change rifles by voice, say <span class="say">"switch to 185"</span> — the word <b>"switch"</b> is what changes the profile. If you shoot with someone still on the old habit, tell them before they wonder why their rifle "changed itself" to a 185-yard call.</div>
+
+<h2 id="hands">5 · Hands-Free — "Hey Spotter"</h2>
+<p>With your hands on the rifle, tapping is one hand too many. Turn on <b>HANDS-FREE MODE</b> (gear → HEY SPOTTER: ON) and the app listens for its name.</p>
+<div class="steps">
+  <div class="st"><div>Gear icon → <b>HEY SPOTTER: ON</b>. The status line under the mic changes to SAY "HEY SPOTTER"…</div></div>
+  <div class="st"><div>Get behind the rifle. When you're ready: <span class="say">"Hey Spotter — eight hundred yards"</span></div></div>
+  <div class="st"><div>The status line walks through DISTANCE? → LISTENING… → PROCESSING… and the call comes back in your ear: <i>"Eight hundred yards. Up 7.4. Left 1.1."</i> No hands.</div></div>
+</div>
+<div class="figrow">
+  <div>
+    <img src="images/27-call-1000-dasher.png" alt="Hands-free 1000 yard call on the Dasher">
+    <figcaption>Hands-free armed, call delivered: Dasher at 1,000 — up 7.4, left 1.3, wind in the solution.</figcaption>
+  </div>
+</div>
+<p>The wake phrase to remember is <b>"Hey Spotter."</b> Speak it, pause a half-beat, then the distance. The number rule applies here too: a bare number after the wake phrase is a distance; <span class="say">"Hey Spotter — switch to 185"</span> changes rifles.</p>
+
+<h2 id="tapdist">6 · TAP DISTANCE</h2>
+<p>Loud line? Quiet bench where you'd rather not talk? Tap <b>TAP DISTANCE</b> (bottom right), type the yards on the number pad, hit <b>CALL</b>. You get the exact same spoken solution and readout — just typed instead of spoken.</p>
+<div class="figrow">
+  <div>
+    <img src="images/15-tap-distance-adj-call.png" alt="TAP DISTANCE entry with a delivered call">
+    <figcaption>Typed or spoken — same call. (This one's tagged ADJ: a trued velocity.)</figcaption>
+  </div>
+  <div>
+    <img src="images/25-moa-call-1000-log.png" alt="A 1000 yard call delivered in MOA mode">
+    <figcaption>MOA mode — flip the toggle, every number follows. The range log keeps both: U 33.0 MOA is the same call as U 9.6 MRAD.</figcaption>
+  </div>
+</div>
+
+<h2 id="dope">7 · Your DOPE Card</h2>
+<div class="figrow">
+  <div>
+    <img src="images/05-dope-card-full-drift.png" alt="DOPE card 100 to 1000 with DRIFT column">
+    <figcaption>100 TO 1000 — the full table.</figcaption>
+  </div>
+  <div>
+    <img src="images/07-range-card-custom-labels.png" alt="Custom range card with landmark labels">
+    <figcaption>A custom Range — named chips, your distances, your landmarks.</figcaption>
+  </div>
+</div>
+<p>Tap <b>CARD</b> for the whole drop table at a glance — the card you'd tape to your stock, except it's live: it uses your current rifle, muzzle velocity, wind, and atmosphere right now, not a printout from last season. The footer shows the exact conditions it's built on (temp · pressure · humidity · density altitude).</p>
+<p>Three columns: <b>RANGE · ELEV · DRIFT.</b> DRIFT is your full horizontal hold — wind hold and spin drift merged into one number. With zero wind, the small number still showing is <b>pure spin drift</b> — that's the bullet's own rotation carrying it sideways, not a bug.</p>
+<h3>Range layouts — your three Range cards</h3>
+<p>The chips across the top are <b>three Range cards, and they're yours.</b> Each one is a named list of distances — rename it, add or remove yardages, reorder them — and the card recomputes elevation and wind for whichever rifle is active, live for today's conditions.</p>
+<p><b>Your first Range comes ready.</b> Rimfire rifles seed it 100→400 in 25-yard steps; centerfire seeds 100→1000 by hundreds. It adapts to your profile type until the first time you edit or rename it — after that it's your card and it stays exactly as you built it.</p>
+<p><b>The other two read + ADD RANGE.</b> Tap one, name it — your match course, your lease, your club — and type each distance the way the stage sheet (or the terrain) gives it to you. And you can label each distance too: type a short name and it shows right under the yardage on the card — <b>FOOD PLOT EDGE 785</b>, <b>GATE POST 280</b>.</p>
+<div class="callout"><b>The deer-stand play.</b> Corner of the field 280. Food plot edge 785. Pre-set your yardages before the season, name the card for the stand, and when the moment comes you glance and hold — nothing to call out, nothing to change. Your Ranges survive closing the app; they're waiting when you climb in.</div>
+<p>Everything else on the card works identically on a custom Range: TRUE MODE, the MV stepper, MRAD/MOA, and the conditions footer.</p>
+<p>The MV stepper at the top of the card moves in <b>±10 fps</b> steps (the main-screen stepper is fine-grain). MRAD/MOA follows your toggle.</p>
+
+<h2 id="true">8 · Truing — Dial It In to YOUR Rifle</h2>
+<div class="figrow">
+  <div>
+    <img src="images/06-dope-true-mode.png" alt="True mode">
+    <figcaption>TRUE MODE — enter what you actually shot.</figcaption>
+  </div>
+  <div class="cap">
+    <p>The built-in math gets your first shot on a pie plate. <b>Truing</b> is how you walk it to dead center for your gun, your load, your day. Two tools:</p>
+    <h3>Quick — the FPS stepper</h3>
+    <p>Shooting a touch high or low across the board? Nudge muzzle velocity on the main screen until calls match impacts. Green +N / red −N shows your offset; trued calls read <b>ADJ</b>.</p>
+    <h3>Real — TRUE MODE</h3>
+    <p>CARD → check <b>TRUE MODE</b>. At each distance you've shot, enter the hold you <i>actually</i> used in the ACTUAL column (− / + steppers). The CORR column shows the correction. Tap SAVE &amp; CALIBRATE and SpotterCall bends its curve through your real data — calls now read <b>CAL</b>. Give it two distances or ten; it fits what you feed it.</p>
+    <div class="callout"><b>Truing is session-based.</b> It resets when you restart the app — every range day starts from the honest baseline and you re-true on the day's real conditions. That's a feature: yesterday's heat isn't today's truth.</div>
+  </div>
+</div>
+
+<h2 id="profiles">9 · Rifles &amp; ADD YOUR RIFLE</h2>
+<p>Tap the rifle bar to open the list. Profiles are grouped — tap a group to expand, tap a rifle to select. Your own builds live under <b>CUSTOM</b> at the top.</p>
+<div class="figrow">
+  <div>
+    <img src="images/09-rifle-list-open.png" alt="Rifle list open">
+    <figcaption>The rifle bar, open — groups expand, tap to select.</figcaption>
+  </div>
+  <div>
+    <img src="images/10-add-rifle-builder.png" alt="ADD YOUR RIFLE builder filled in">
+    <figcaption>ADD YOUR RIFLE — filled in, ready to BUILD.</figcaption>
+  </div>
+</div>
+<h3>Switching rifles by voice</h3>
+<p>Say <span class="say">"switch to 185"</span> — or the profile's name — and you'll hear the change confirmed while the rifle bar updates. The word <b>"switch"</b> is required. A bare <span class="say">"185"</span> is a 185-yard distance call, not a rifle change — that's <a href="#read" style="color:var(--gold2)">the number rule</a>, and it's what keeps a distance call from ever silently swapping your profile.</p>
+<h3>Build your rifle in 30 seconds</h3>
+<div class="steps">
+  <div class="st"><div>Rifle bar → <b>ADD YOUR RIFLE</b>.</div></div>
+  <div class="st"><div>Pick your cartridge and bullet — the app fills in a starting BC and velocity.</div></div>
+  <div class="st"><div>Better: read the real <b>BC and muzzle velocity off your ammo box</b> and type those in.</div></div>
+  <div class="st"><div>Set zero distance and scope height. Name it. <b>BUILD.</b></div></div>
+</div>
+<p>Your rifle runs on the same engine as the built-in profiles, lives under CUSTOM, and survives closing the app. True the velocity on real impacts and it only gets better.</p>
+
+<h2 id="kestrel">10 · Live Weather &amp; Wind (Kestrel — Optional)</h2>
+<h3>Where your wind and weather come from</h3>
+<p>Every call needs two things beyond your rifle and distance: <b>the air</b> (temperature, pressure, humidity) and <b>the wind</b>. SpotterCall works at three levels — you get a true solution at every one of them:</p>
+<table class="plain">
+  <tr><th>Your gear</th><th>The air (ATMO)</th><th>The wind</th></tr>
+  <tr><td><b>No sensors</b></td><td>Local weather, pulled automatically for your location. The circular arrow in the ATMO row refreshes it.</td><td>You call it: read the flags, the mirage, the grass — spin the wind dial to the direction, tap + / − to the speed. The oldest skill in shooting, and the app does the math on your read.</td></tr>
+  <tr><td><b>Kestrel</b></td><td>Live, from the air you're actually standing in.</td><td>Live speed and direction <i>at the shooter</i> — the impeller and compass stream straight into your solution.</td></tr>
+  <tr><td><b>Kestrel + Wind Zero</b></td><td>Live from the Kestrel.</td><td>The full picture: Kestrel reads the wind at your position, Wind Zero's vane reads it <i>downrange where the bullet actually flies</i>. Setup rule: <b>point the Wind Zero's arrow downrange, at your target</b> — its readings are relative to where it's aimed.</td></tr>
+</table>
+<div class="callout"><b>No sensors is not a downgrade to guessing.</b> The ballistics run fully on your phone either way — sensors just replace your eyeball wind call with a measured one. If a sensor drops mid-session, the app tells you (STALE — it never quietly rides old numbers) and you're back to level one, still in the fight.</div>
+
+<h3>Reading the wind display — one wind, everywhere</h3>
+<div class="figrow">
+  <div>
+    <img src="images/20-wind-kestrel-active.png" alt="Wind screen with Kestrel active">
+    <figcaption>Kestrel live (green) — vane on the dial, TARGET at the top, bearing set.</figcaption>
+  </div>
+  <div>
+    <img src="images/21-wind-windzero-active.png" alt="Wind screen with Wind Zero active">
+    <figcaption>Wind Zero live (blue) — downrange wind driving the hold, 3-min min/max band.</figcaption>
+  </div>
+</div>
+<div class="figrow">
+  <div>
+    <img src="images/22-wind-variable-diamond.png" alt="Variable wind with the variance diamond">
+    <figcaption>VARIABLE wind — the diamond is your current hold; the green/red marks are the 3-min swing. Hold the diamond, know the bracket.</figcaption>
+  </div>
+  <div>
+    <img src="images/19-wind-screen-set-bearing.png" alt="Wind screen showing the SET BEARING nudge">
+    <figcaption>The SET BEARING nudge — live wind isn't a hold side until the app knows your line of fire.</figcaption>
+  </div>
+</div>
+<div class="callout"><b>What you see:</b> every wind surface in the app — the dial, the pills, the HOLD readout, the spoken call — shows the <b>same resolved wind</b>. They can't disagree with each other, so if a number looks wrong, the question is never "which display do I trust," it's "which <i>source</i> is feeding it."
+<br><br><b>What it means:</b> the panel label states the convention outright — direction is where the wind is blowing <b>FROM</b> (a wind FROM 270° is coming out of the west). The L/R hold is computed for <b>your</b> firing line — which is only true after your bearing is set.
+<br><br><b>What to do:</b> if the pills grey out and you see <b>STALE · STREAM LOST</b>, the sensor stopped talking — walk back into range or power-cycle it. The app will not quietly ride old numbers; grey means "not current," and your solution says so.</div>
+
+<h3>Step zero — Kestrel users: calibrate the compass first</h3>
+<p>Before anything else, every session: calibrate the Kestrel's compass <b>outdoors, away from steel and motors</b> (Settings → Compass Cal — full walkthrough below). A calibrated compass reads true within about ±5° in every direction; an uncalibrated one can sit 80°+ off and never warn you. Two minutes, every session, no exceptions. An uncalibrated compass is also the #1 cause of the SOURCES-DISAGREE banner (below).</p>
+<h3>Step one — before you trust any live wind: set your bearing</h3>
+<p>A wind sensor knows the wind. It does <b>not</b> know where your target is — you have to tell it. SpotterCall owns your direction of fire: until you've set it, a <b>SET BEARING</b> nudge sits on the wind panel as your reminder. Say <span class="say">"Hey Spotter — bearing one six two"</span> (your direction of fire, in compass degrees) at the start of every session, and again if you move to a different target line.</p>
+<div class="callout red"><b>Why this is a safety rule, not a nicety:</b> left/right is always <i>relative to your shot</i>. A hold side computed without your bearing is a hold side for somebody else's target — the speed will be right, and the shoulder can be wrong. New session, new bearing. Every time. The SET BEARING nudge is on screen precisely so you can't forget.</div>
+
+<h3>Connect in the app — My Gear</h3>
+<div class="steps">
+  <div class="st"><div>Turn the Kestrel on, Bluetooth enabled.</div></div>
+  <div class="st"><div>Tap <b>KESTREL</b> (top right). <b>First time:</b> the My Gear picker lists the units it can hear — pick <i>yours</i>. From then on SpotterCall remembers your unit by name and reconnects to that one only.</div></div>
+  <div class="st"><div><b>Make it yours:</b> rename the unit something human — "Tripp Link" beats a serial number. <b>RELEASE</b> lets the unit go if you swap hardware or hand it to a teammate; then just pick again.</div></div>
+  <div class="st"><div>Gold dot on the button + live ATMO row = streaming. Every call from now on is corrected for the air you're actually in. Blow on the impeller and watch the numbers move.</div></div>
+</div>
+<div class="callout"><b>A crowded firing line can't steal your connection.</b> Earlier builds paired with the first Kestrel they heard — five shooters, five Kestrels, chaos. Now the app connects only to the unit <i>you</i> picked in My Gear, no matter how many are broadcasting at the line. If your unit drops out of range or powers off, the app handles it cleanly and picks the stream back up when it returns — no crash, no stranger's wind.</div>
+<p>No Kestrel? No problem — SpotterCall pulls local weather automatically, and the ballistics run fully on your phone.</p>
+<div class="figrow">
+  <div>
+    <img src="images/14-kestrel-my-gear-picker.png" alt="My Gear Kestrel picker">
+    <figcaption>My Gear — your units, named and remembered.</figcaption>
+  </div>
+  <div>
+    <img src="images/17-kestrel-live-atmo-expanded.png" alt="Live Kestrel session with ATMO expanded">
+    <figcaption>Connected and streaming — live wind, live ATMO, density altitude.</figcaption>
+  </div>
+</div>
+<p>Works with the Kestrel 5700 family (5700 BALLISTIC, DROP D3, WEZ — all bench-verified). If readings look blank or odd for the first seconds after connecting, that's the warm-up filter — the app rejects bad readings rather than feeding them into your hold.</p>
+
+<h3>Two sensors, two winds — the SOURCES-DISAGREE banner</h3>
+<div class="figrow">
+  <div>
+    <img src="images/23-wind-sources-disagree.png" alt="SOURCES DISAGREE banner with both sensors connected">
+    <figcaption>Both sensors talking, 91° apart — the app says so instead of silently picking one. (WIND ZERO pinned 📌 as the source here.)</figcaption>
+  </div>
+</div>
+<div class="callout"><b>What you see:</b> running a Kestrel <i>and</i> a Wind Zero, a <b>SOURCES-DISAGREE</b> banner appears when the two report winds that genuinely conflict.
+<br><br><b>What it means:</b> it's not an error. Two honest instruments in two different pieces of air — the wind at your shoulder is not always the wind downrange. But a big disagreement can also mean a setup problem.
+<br><br><b>What to do:</b> first check setup — is the Wind Zero's arrow pointed downrange at your target, and is the Kestrel's compass calibrated (step zero)? If both check out, the disagreement is real wind: look at the flags between you and the target and favor the reading from the air your bullet actually flies through — usually downrange.</div>
+
+<h3>Set your Kestrel up right — five minutes, once per session</h3>
+<p>SpotterCall reads your Kestrel's <b>live wind speed</b> and <b>compass wind direction</b> straight off the unit. That means one Kestrel setting actually matters to your calls — the compass — and it's the one that goes bad quietly. Do this before the first shot, in order:</p>
+<div class="steps">
+  <div class="st"><div><b>Calibrate the compass — outdoors, away from steel.</b> On the Kestrel: Settings → Compass Cal, hold the unit vertical, rotate slowly per the prompts. Do it away from vehicles, tripods, motors, and the gun line. A fan motor or a truck bed can pull the compass <b>80° or more</b> off — and it won't tell you.</div></div>
+  <div class="st"><div><b>Capture Direction of Fire.</b> Tgt → DoF → Capture. Hold the unit vertical and point the <b>BACK</b> of it at your target, then capture.</div></div>
+  <div class="st"><div><b>Capture the wind.</b> Tgt → WD → Capture. Point the <b>BACK</b> of the unit into the wind and hold it there 5+ seconds — it averages while you hold.</div></div>
+  <div class="st"><div><b>Set WD Chg to "w/ DoF."</b> Settings → Wind Direction → w/ DoF. When you swing to a new target, the stored wind rotates with your direction of fire, so the relative wind stays true.</div></div>
+  <div class="st"><div><b>Units: degrees.</b> Matches what SpotterCall displays.</div></div>
+</div>
+<div class="callout red"><b>THE classic mistake:</b> captures use the <b>BACK</b> of the unit — the side facing you when you read the screen points at <i>you</i>, not the target. Point the face into the wind and everything stores 180° backwards. If your wind calls feel like polar opposites of reality, this is why.</div>
+<h3>What SpotterCall actually reads</h3>
+<table class="plain">
+  <tr><th>Your call uses</th><th>The Kestrel's own screen uses</th></tr>
+  <tr><td>Live vane <b>wind speed</b>, raw compass <b>wind direction</b>, live <b>atmosphere</b> — plus the bearing <i>you</i> speak. Steps 2–4 above are not in your solution.</td><td>Its stored Tgt / WD / DoF captures. Set them right (steps 2–4) or ignore that screen — a stale capture makes the unit's solution useless as a cross-check, even while your SpotterCall calls stay correct.</td></tr>
+</table>
+<div class="callout"><b>Why bother with steps 2–4 at all?</b> Cross-checking. When your Kestrel's own solution screen and SpotterCall agree, you know the whole chain is honest. A Kestrel with stale captures will "disagree" with a correct call and shake your confidence right when you need it.</div>
+
+<h2 id="settings">11 · Voice Settings</h2>
+<div class="figrow">
+  <div>
+    <img src="images/08-voice-settings-v12.png" alt="Voice settings">
+    <figcaption>The gear → Voice Settings.</figcaption>
+  </div>
+  <div class="cap">
+    <p><b>VOICE — COMMANDER.</b> The voice in your ear. Tap PREVIEW VOICE to hear it before you're on the clock.</p>
+    <p><b>HANDS-FREE MODE — HEY SPOTTER: ON/OFF.</b> The wake-word switch. ON = the app listens for "Hey Spotter" so you never touch the screen. OFF = mic only listens when you tap it.</p>
+    <p><b>EXPORT DATA (CSV).</b> Your session's calls as a spreadsheet — for your DOPE book or your load notes.</p>
+    <p>The fine print at the bottom is your mic rescue line: <i>Settings › Privacy &amp; Security › Microphone › SpotterCall → ON.</i></p>
+  </div>
+</div>
+
+<h2 id="watch">12 · On Your Wrist</h2>
+<p>SpotterCall has an <b>Apple Watch</b> companion — pick your rifle, call your distance, get the hold on your wrist when your phone's in your pack. <span class="pill">screenshots coming</span></p>
+
+<h2 id="trouble">13 · If Something's Off</h2>
+<table class="plain">
+  <tr><th>Symptom</th><th>Fix</th></tr>
+  <tr><td>Mic does nothing / never hears you</td><td>iPhone Settings › Privacy &amp; Security › Microphone › SpotterCall → ON. Same path for Speech Recognition.</td></tr>
+  <tr><td>"Hey Spotter" doesn't wake it</td><td>Check the gear → HEY SPOTTER is ON. Speak the phrase, brief pause, then the distance.</td></tr>
+  <tr><td>Said "185" and got a 185-yard call, not my 185 profile</td><td>That's the number rule working: a bare number is always a distance. Say <span class="say">"switch to 185"</span> to change rifles (<a href="#read" style="color:var(--gold2)">section 4</a>).</td></tr>
+  <tr><td>"Beyond profile's table" / "Below profile's table"</td><td>The distance is outside the selected rifle's table — honest refusal, not a bug. Check you've got the right profile loaded for the shot you're taking.</td></tr>
+  <tr><td>Call has no wind number</td><td>The wind master switch is OFF (green ON button in the wind panel). Tap it ON.</td></tr>
+  <tr><td>KESTREL won't connect</td><td>Bluetooth ON on both devices, Kestrel within ~30 ft, and make sure another app (Kestrel LiNK) isn't holding the connection — only one app can talk to it at a time. Still nothing? Open My Gear — you may be remembered to a different unit. RELEASE and re-pick yours.</td></tr>
+  <tr><td>Wind dial is blue / can't drag it</td><td>A connected sensor is driving the dial — blue = live mirror, read-only by design. Want manual control back? My Gear → <b>RELEASE</b> (or tap KESTREL off) and the dial returns to gold and drag works again.</td></tr>
+  <tr><td>Wind pills greyed out — STALE · STREAM LOST</td><td>The sensor stopped talking. Walk back into BLE range or power-cycle the unit; the stream picks back up on its own. Grey means "not current" — the app won't ride old numbers.</td></tr>
+  <tr><td>SOURCES-DISAGREE banner</td><td>Kestrel and Wind Zero are reporting conflicting winds. Check the WZ arrow points downrange at your target and the Kestrel compass is calibrated; if setup's clean, it's real — favor the downrange read (<a href="#kestrel" style="color:var(--gold2)">section 10</a>).</td></tr>
+  <tr><td>Kestrel wind direction seems way off / backwards</td><td>Recalibrate the compass outdoors away from steel and motors, and remember captures use the BACK of the unit (<a href="#kestrel" style="color:var(--gold2)">section 10</a>).</td></tr>
+  <tr><td>Wind hold is on the wrong shoulder</td><td>First check: did you set your bearing this session? The SET BEARING nudge on the wind panel means you didn't. Say "Hey Spotter — bearing" + your direction of fire. Then check the Wind Zero's arrow is pointed at your target. Side calls are relative to your shot — the app can't know your target line unless you tell it.</td></tr>
+  <tr><td>It heard the wrong distance</td><td>It told you — the distance is read back first, and HEARD shows it in writing. Don't shoot that hold; call it again.</td></tr>
+</table>
+
+<p style="margin-top:50px;text-align:center;color:var(--dim);font-family:'Barlow Condensed',sans-serif;letter-spacing:3px;">SPOTTERCALL · TIME ON THE TRIGGER.</p>
+
+</div>
+</body>
+</html>
