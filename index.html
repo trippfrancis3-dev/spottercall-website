@@ -1510,7 +1510,68 @@
     <a href="https://apps.apple.com/app/apple-store/id6761488199?pt=128712589&ct=website-footer&mt=8" class="cta-btn cta-primary">Download on the App Store</a>
     <a href="https://www.instagram.com/spottercall" class="cta-btn" target="_blank" style="margin-left:12px">Follow @spottercall</a>
   </div>
+
+  <!-- ==== Email capture (Netlify Forms; no backend, no third party) ==== -->
+  <div id="sc-signup" style="max-width:520px;margin:3.25rem auto 0;padding-top:2.25rem;border-top:1px solid rgba(212,168,71,0.22);">
+    <p style="font-family:'Barlow Condensed',sans-serif;text-transform:uppercase;letter-spacing:3px;font-size:14px;color:var(--amber);margin:0 0 10px;">Range Notes</p>
+    <p style="font-family:'Barlow',sans-serif;font-size:15px;line-height:1.6;color:var(--cream);opacity:0.82;margin:0 0 20px;">
+      New reference profiles, field results, and what's coming next. Occasional — not a newsletter.
+    </p>
+
+    <form name="range-notes" method="POST" data-netlify="true" netlify-honeypot="bot-field" action="/?signup=ok#sc-signup"
+          style="display:flex;flex-wrap:wrap;gap:10px;justify-content:center;">
+      <input type="hidden" name="form-name" value="range-notes">
+      <p style="display:none"><label>Skip this if you're human: <input name="bot-field"></label></p>
+      <label for="sc-email" style="position:absolute;left:-9999px">Email address</label>
+      <input id="sc-email" type="email" name="email" required autocomplete="email" placeholder="you@email.com"
+             style="flex:1 1 260px;min-width:0;background:rgba(255,255,255,0.04);border:1px solid rgba(212,168,71,0.35);border-radius:3px;color:var(--white);font-family:'Barlow',sans-serif;font-size:16px;padding:13px 15px;outline:none;"
+             onfocus="this.style.borderColor='var(--amber)'" onblur="this.style.borderColor='rgba(212,168,71,0.35)'">
+      <button type="submit" class="cta-btn cta-primary" style="flex:0 0 auto;cursor:pointer;border:none;">Sign Up</button>
+    </form>
+
+    <p id="sc-signup-msg" role="status" style="display:none;font-family:'Barlow',sans-serif;font-size:15px;color:var(--amber);margin:16px 0 0;"></p>
+    <p style="font-family:'Barlow',sans-serif;font-size:12.5px;color:var(--cream);opacity:0.45;margin:14px 0 0;">
+      Email only. Never sold, never shared. Unsubscribe any time.
+    </p>
+  </div>
 </section>
+
+<script>
+/* Progressive enhancement: submit in-place so the shooter never leaves the page.
+   If JS is off or the fetch fails, the form posts normally to Netlify. */
+(function () {
+  var form = document.querySelector('form[name="range-notes"]');
+  if (!form) return;
+  var msg = document.getElementById('sc-signup-msg');
+
+  function show(text) { if (msg) { msg.textContent = text; msg.style.display = 'block'; } }
+
+  // Returning from a non-JS submit
+  if (location.search.indexOf('signup=ok') !== -1) {
+    form.style.display = 'none';
+    show("You're on the list. Talk soon.");
+  }
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var btn = form.querySelector('button[type="submit"]');
+    if (btn) { btn.disabled = true; btn.textContent = 'Sending…'; }
+
+    fetch('/', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams(new FormData(form)).toString()
+    }).then(function (r) {
+      if (!r.ok) throw new Error('bad status');
+      form.style.display = 'none';
+      show("You're on the list. Talk soon.");
+    }).catch(function () {
+      if (btn) { btn.disabled = false; btn.textContent = 'Sign Up'; }
+      show('That didn’t go through — try again, or email trippfrancis3@gmail.com.');
+    });
+  });
+})();
+</script>
 
 <!-- ============ FOOTER ============ -->
 <footer>
